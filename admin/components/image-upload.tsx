@@ -7,6 +7,8 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
 import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
+import SwipeableTextMobileStepper from "./image-carousel";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ImageUploadProps {
   disabled?: boolean;
@@ -33,9 +35,12 @@ const ImageUpload = ({
   ) => void;
 }) => {
   const [isMounted, setisMounted] = useState(false);
-  const [image, setImage] = useState<string | null>("");
+  const [image, setImage] = useState([]);
   const md = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
+  const lightmode = theme.palette.mode === "dark";
+
+  console.log(image);
 
   useEffect(() => {
     if (!isMounted) {
@@ -62,31 +67,24 @@ const ImageUpload = ({
         flexDirection: "column",
         alignItems: "center",
         gap: "4px",
+        position: "relative",
       }}
     >
       <Box
         sx={{
           height: "500px",
-          width: md ? "600px" : "100%",
+          width: md ? "100%" : "100%",
           marginBottom: "20px",
         }}
       >
-        {data?.imageUrl || image ? (
+        {image.length > 0 ? (
           <>
-            <img
-              style={{
-                height: "100%",
-                display: "flex",
-                width: "100%",
-                borderRadius: 12,
-              }}
-              src={data?.imageUrl ? data?.imageUrl : image}
-            />
+            <SwipeableTextMobileStepper image={image} />
           </>
         ) : (
           <Box
             sx={{
-              border: "1px dashed white",
+              border: lightmode ? "1px dashed white" : "1px dashed black",
               height: "100%",
               display: "flex",
               alignItems: "center",
@@ -94,7 +92,8 @@ const ImageUpload = ({
               borderRadius: 3,
               paddingBottom: "20px",
               textAlign: "center",
-              fontSize: 12,
+              fontSize: 15,
+              width: "100%",
             }}
           >
             No image yet. Click button below
@@ -103,9 +102,10 @@ const ImageUpload = ({
       </Box>
 
       <CldUploadWidget
+        options={{ multiple: true, maxFiles: 5 }}
         onUpload={(image) => {
           // @ts-ignore
-          setImage(image?.info?.secure_url);
+          setImage((prevImage) => [...prevImage, image?.info?.secure_url]);
           // @ts-ignore
           setFieldValue("imageUrl", image?.info?.secure_url);
         }}
@@ -114,7 +114,7 @@ const ImageUpload = ({
         {({ open }) => {
           return (
             <>
-              {!image && (
+              {image.length === 0 && (
                 <Button
                   disabled={disabled}
                   variant="contained"
@@ -129,6 +129,8 @@ const ImageUpload = ({
                     },
                     fontSize: "13.5px",
                     paddingY: "4px",
+                    position: "absolute",
+                    bottom: 50,
                   }}
                 >
                   <AddPhotoAlternateIcon />
@@ -142,10 +144,10 @@ const ImageUpload = ({
         }}
       </CldUploadWidget>
 
-      {image && (
+      {image.length > 0 && (
         <Button
           onClick={() => {
-            setImage(null);
+            setImage([]);
           }}
           sx={{
             backgroundColor: "red",
@@ -156,10 +158,12 @@ const ImageUpload = ({
               color: hoverTextMode2,
             },
             fontSize: "13.5px",
-            paddingY: "4px",
+            position: "absolute",
+            right: 0,
+            display: "flex",
           }}
         >
-          Remove
+          <CloseIcon />
         </Button>
       )}
     </Box>

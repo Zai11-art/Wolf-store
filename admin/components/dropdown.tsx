@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import { useStoreDialog } from "@/hooks/use-store-dialog";
 import Divider from "@mui/material/Divider";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 const options = ["Store 1", "Squash and merge"];
 
@@ -27,9 +28,16 @@ interface StoreProps {
 }
 
 export default function DropDown({ stores }: StoreProps) {
+  console.log(stores);
   const theme = useTheme();
   const onOpen = useStoreDialog((state) => state.onOpen);
   const onClose = useStoreDialog((state) => state.onClose);
+  const router = useRouter();
+  const pathName = usePathname();
+  const { storeId } = useParams();
+
+  const currStore = stores.find((store) => store.id === storeId);
+  console.log(currStore?.name);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
@@ -51,6 +59,10 @@ export default function DropDown({ stores }: StoreProps) {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => {
+    // @ts-ignore
+    const store = stores.find((store) => store.name === event.target.outerText);
+    router.push(`/${store?.id}`);
+
     setSelectedIndex(index);
     setOpen(false);
   };
@@ -107,7 +119,7 @@ export default function DropDown({ stores }: StoreProps) {
             paddingTop: "8px",
           }}
         >
-          {stores[selectedIndex].name}
+          {currStore?.name}
         </Button>
         <Button
           sx={{

@@ -151,6 +151,112 @@ const DataTable = ({
         },
       ];
     }
+
+    if (dataType === "orders") {
+      return [
+        {
+          accessorKey: "id", //access nested data with dot notation
+          header: "Order Id",
+          size: 150,
+        },
+        {
+          accessorKey: "storeId", //access nested data with dot notation
+          header: "StoreId",
+          size: 150,
+        },
+        {
+          accessorKey: "isPaid", //access nested data with dot notation
+          header: "Paid Status",
+          size: 150,
+        },
+        {
+          accessorKey: "phone", //access nested data with dot notation
+          header: "Phone No.",
+          size: 150,
+        },
+        {
+          accessorKey: "address", //access nested data with dot notation
+          header: "Address",
+          size: 150,
+        },
+        {
+          accessorKey: "createdAt", //access nested data with dot notation
+          header: "Order Date",
+          size: 150,
+        },
+        {
+          accessorKey: "products", //access nested data with dot notation
+          header: "Product",
+          size: 150,
+        },
+        {
+          accessorKey: "options", //access nested data with dot notation
+          header: "Options",
+          size: 150,
+          Cell: ({ cell }) => (
+            <SplitButton dataType="orders" id={cell.row.original.id} />
+          ),
+        },
+      ];
+    }
+
+    if (dataType === "products") {
+      return [
+        {
+          accessorKey: "id", //access nested data with dot notation
+          header: "Order Id",
+          size: 150,
+        },
+        {
+          accessorKey: "store", //access nested data with dot notation
+          header: "Store",
+          size: 150,
+        },
+        {
+          accessorKey: "name", //access nested data with dot notation
+          header: "Product Name",
+          size: 150,
+        },
+        {
+          accessorKey: "color", //access nested data with dot notation
+          header: "Color",
+          size: 150,
+        },
+        {
+          accessorKey: "size", //access nested data with dot notation
+          header: "Size",
+          size: 150,
+        },
+        {
+          accessorKey: "price", //access nested data with dot notation
+          header: "Total Price",
+          size: 150,
+        },
+        {
+          accessorKey: "isFeatured", //access nested data with dot notation
+          header: "Featured?",
+          size: 150,
+        },
+        {
+          accessorKey: "isArchived", //access nested data with dot notation
+          header: "Archived?",
+          size: 150,
+        },
+        {
+          accessorKey: "createdAt", //access nested data with dot notation
+          header: "Creation Date",
+          size: 150,
+        },
+        {
+          accessorKey: "options", //access nested data with dot notation
+          header: "Options",
+          size: 150,
+          Cell: ({ cell }) => (
+            <SplitButton dataType="orders" id={cell.row.original.id} />
+          ),
+        },
+      ];
+    }
   }, []);
 
   return (

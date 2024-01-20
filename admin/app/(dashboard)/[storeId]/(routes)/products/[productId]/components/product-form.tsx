@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningDialog from "@/components/warning-dialog";
+import { Formik } from "formik";
 
 interface ProductFormProps {
   data:
@@ -63,10 +64,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
   colors,
   sizes,
 }) => {
-  console.log(data);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const sm = useMediaQuery("(min-width:700px)");
+  const md = useMediaQuery("(min-width:1200px)");
 
   // SELECT
   const [select, setSelect] = useState("");
@@ -88,24 +88,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const hoverColorMode2 = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode2 = theme.palette.mode === "dark" ? "white" : " black";
 
-  const form = useForm<ProductFormValuesTypes>({
-    resolver: yupResolver(formSchema),
-    defaultValues: data
-      ? { ...data, price: parseFloat(String(data?.price)) }
-      : {
-          name: "",
-          images: [],
-          price: 0,
-          categoryId: "",
-          colorId: "",
-          sizeId: "",
-          isFeatured: false,
-          isArchived: false,
-        },
-  });
-
-  const { register, handleSubmit, formState } = form;
-  const { errors } = formState;
+  const initialValue = {
+    name: `${data ? data?.name : ""}`,
+    images: [],
+    price: `${data ? data?.price : ""}`,
+    categoryId: `${data ? data?.categoryId : ""}`,
+    colorId: `${data ? data?.colorId : ""}`,
+    sizeId: `${data ? data?.sizeId : ""}`,
+    isFeatured: `${data ? data?.isFeatured : false}`,
+    isArchived: `${data ? data?.isArchived : false}`,
+  };
 
   // FIX ROUTES
   const onSubmit = async (payload: ProductFormValuesTypes) => {
@@ -148,15 +140,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
   return (
     <>
-      <WarningDialog
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      />
+      <WarningDialog loading={loading} />
       <Container
         maxWidth={false}
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{ display: "flex", flexDirection: "column", marginBottom: 12 }}
       >
         <Box
           sx={{
@@ -170,7 +157,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             sx={{
               display: "flex",
               width: "100%",
-              gap: "1px",
+              gap: "10px",
               flexDirection: "column",
             }}
           >
@@ -179,7 +166,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               variant="h4"
               component="div"
             >
-              {data ? "Edit Placard" : "Create Placard"}
+              {data ? "Edit Products" : "Create Products"}
             </Typography>
             <Typography
               style={{
@@ -187,8 +174,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
               }}
             >
               {data
-                ? "Edit your placard here."
-                : "Create new placard for your store."}
+                ? "Edit your Products here."
+                : "Create new Products for your store."}
             </Typography>
           </Box>
           {data && (
@@ -224,186 +211,303 @@ const ProductForm: React.FC<ProductFormProps> = ({
         />
 
         {/* DATE SECTIONS */}
-        <Box>
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <Box sx={{ marginBottom: "30px" }}>
-              <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                Placard Image
-              </Typography>
-
-              {/*FIXING: TO BE FIXED: FIND A WAY TO UPLOAD WITH THE FORM */}
-              <ImageUpload
-                // value={field}
-                disabled={loading}
-                // onChange={()}
-                // onRemove={}
-              />
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "18px",
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{ marginY: sm ? "30px" : null, width: sm ? null : "100%" }}
+        <Box sx={{ display: "flex" }}>
+          <Formik
+            onSubmit={onSubmit}
+            validationSchema={formSchema}
+            initialValues={initialValue}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              setFieldValue,
+              resetForm,
+            }) => (
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                style={{ display: "flex", width: "100%", height: "100%" }}
               >
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Name
-                </Typography>
-                <TextField
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
-                  id="outlined-basic"
-                  label="Name"
-                  variant="outlined"
-                  required
-                  sx={{ width: sm ? "400px" : null, display: "flex" }}
-                  {...register("name", { required: true })}
-                />
-              </Box>
-              <Box
-                sx={{ marginY: sm ? "30px" : null, width: sm ? null : "100%" }}
-              >
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Price
-                </Typography>
-                <TextField
-                  error={!!errors.price}
-                  helperText={errors.price?.message}
-                  id="outlined-basic"
-                  label=""
-                  variant="outlined"
-                  required
-                  type="number"
-                  sx={{ width: sm ? "400px" : null, display: "flex" }}
-                  {...register("price", { required: true })}
-                />
-              </Box>
-
-              <Box
-                sx={{
-                  marginY: sm ? "30px" : null,
-                  display: "flex",
-                  flexDirection: "column",
-                  width: sm ? null : "100%",
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Category
-                </Typography>
-                <FormControl>
-                  <InputLabel id="demo-simple-select-disabled-label">
-                    category
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-disabled-label"
-                    id="demo-simple-select-disabled"
-                    value={select}
-                    label="category"
-                    onChange={handleChange}
-                    sx={{ width: sm ? "400px" : null, display: "flex" }}
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    height: "100%",
+                    gap: 3,
+                    flexDirection: md ? "row" : "column",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {categories.map((cat) => (
-                      <MenuItem value={cat.name}>{cat.name}</MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText>Disabled</FormHelperText>
-                </FormControl>
-              </Box>
-              <Box
-                sx={{
-                  marginY: sm ? "30px" : null,
-                  display: "flex",
-                  flexDirection: "column",
-                  width: sm ? null : "100%",
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Size
-                </Typography>
-                <FormControl>
-                  <InputLabel id="demo-simple-select-disabled-label">
-                    size
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-disabled-label"
-                    id="demo-simple-select-disabled"
-                    value={select}
-                    label="size"
-                    onChange={handleChange}
-                    sx={{ width: sm ? "400px" : null, display: "flex" }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {sizes.map((size) => (
-                      <MenuItem value={size.name}>{size.name}</MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText>Disabled</FormHelperText>
-                </FormControl>
-              </Box>
-              <Box
-                sx={{
-                  marginY: sm ? "30px" : null,
-                  display: "flex",
-                  flexDirection: "column",
-                  width: sm ? null : "100%",
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Color
-                </Typography>
-                <FormControl>
-                  <InputLabel id="demo-simple-select-disabled-label">
-                    color
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-disabled-label"
-                    id="demo-simple-select-disabled"
-                    value={select}
-                    label="color"
-                    onChange={handleChange}
-                    sx={{ width: sm ? "400px" : null, display: "flex" }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {colors.map((color) => (
-                      <MenuItem value={color.name}>{color.name}</MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText>Disabled</FormHelperText>
-                </FormControl>
-              </Box>
-            </Box>
+                    <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
+                      Placard Image
+                    </Typography>
 
-            <Box sx={{ marginY: "30px" }}>
-              <Button
-                sx={{
-                  backgroundColor: buttonColorMode2,
-                  color: buttonTextMode2,
-                  fontWeight: "bold",
-                  ":hover": {
-                    backgroundColor: hoverColorMode2,
-                    color: hoverTextMode2,
-                  },
-                  fontSize: "13.5px",
-                  paddingY: "4px",
-                }}
-                type="submit"
-              >
-                Add Store
-              </Button>
-            </Box>
-          </form>
+                    {/*FIXING: TO BE FIXED: FIND A WAY TO UPLOAD WITH THE FORM */}
+                    <ImageUpload
+                      // @ts-ignore
+                      data={data}
+                      disabled={loading}
+                      setFieldValue={setFieldValue}
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      width: "100%",
+                    }}
+                  >
+                    {/* PRODUCT NAME AND PRICE */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        gap: 5,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
+                        >
+                          Product Name
+                        </Typography>
+                        <TextField
+                          sx={{ width: "100%" }}
+                          label="Placard label"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.name}
+                          error={Boolean(touched.name) && Boolean(errors.name)}
+                          helperText={touched.name && errors.name}
+                          variant="outlined"
+                          name="name"
+                          required
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
+                        >
+                          Price
+                        </Typography>
+                        <TextField
+                          sx={{ width: "100%" }}
+                          label="Product Price"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.price}
+                          error={
+                            Boolean(touched.price) && Boolean(errors.price)
+                          }
+                          helperText={touched.price && errors.price}
+                          variant="outlined"
+                          name="price"
+                          required
+                        />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        flexDirection: "column",
+                        gap: 5,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          width: "100%",
+                          gap: md ? 5 : 0,
+                          flexDirection: md ? "row" : "column",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            marginY: md ? "30px" : null,
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontWeight: "bold", marginY: "15px" }}
+                          >
+                            Category
+                          </Typography>
+                          <FormControl>
+                            <InputLabel id="demo-simple-select-disabled-label">
+                              Category
+                            </InputLabel>
+                            <Select
+                              label="Categories"
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              value={values.categoryId}
+                              error={
+                                Boolean(touched.categoryId) &&
+                                Boolean(errors.categoryId)
+                              }
+                              variant="outlined"
+                              name="categoryId"
+                              required
+                              sx={{
+                                width: md ? "100%" : "100%",
+                                display: "flex",
+                              }}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              {categories.map((cat) => (
+                                <MenuItem value={cat.name}>{cat.name}</MenuItem>
+                              ))}
+                            </Select>
+                            <FormHelperText>Disabled</FormHelperText>
+                          </FormControl>
+                        </Box>
+                        <Box
+                          sx={{
+                            marginY: md ? "30px" : null,
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontWeight: "bold", marginY: "15px" }}
+                          >
+                            Size
+                          </Typography>
+                          <FormControl>
+                            <InputLabel id="demo-simple-select-disabled-label">
+                              size
+                            </InputLabel>
+                            <Select
+                              label="Sizes"
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              value={values.sizeId}
+                              error={
+                                Boolean(touched.sizeId) &&
+                                Boolean(errors.sizeId)
+                              }
+                              variant="outlined"
+                              name="sizeId"
+                              required
+                              sx={{
+                                width: md ? "100%" : "100%",
+                                display: "flex",
+                              }}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              {sizes.map((size) => (
+                                <MenuItem value={size.name}>
+                                  {size.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            <FormHelperText>Disabled</FormHelperText>
+                          </FormControl>
+                        </Box>
+                        <Box
+                          sx={{
+                            marginY: md ? "30px" : null,
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{ fontWeight: "bold", marginY: "15px" }}
+                          >
+                            Color
+                          </Typography>
+                          <FormControl>
+                            <InputLabel id="demo-simple-select-disabled-label">
+                              color
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-disabled-label"
+                              label="Color"
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              value={values.colorId}
+                              error={
+                                Boolean(touched.colorId) &&
+                                Boolean(errors.colorId)
+                              }
+                              variant="outlined"
+                              name="colorId"
+                              required
+                              sx={{
+                                width: md ? "100%" : "100%",
+                                display: "flex",
+                              }}
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              {colors.map((color) => (
+                                <MenuItem value={color.name}>
+                                  {color.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            <FormHelperText>Disabled</FormHelperText>
+                          </FormControl>
+                        </Box>
+                      </Box>
+
+                      <Box>
+                        <Button
+                          sx={{
+                            backgroundColor: buttonColorMode2,
+                            color: buttonTextMode2,
+                            fontWeight: "bold",
+                            ":hover": {
+                              backgroundColor: hoverColorMode2,
+                              color: hoverTextMode2,
+                            },
+                            fontSize: "13.5px",
+                            paddingY: "4px",
+                            paddingX: "50px",
+                          }}
+                          type="submit"
+                        >
+                          {data ? "UPDATE" : "CREATE"}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </form>
+            )}
+          </Formik>
         </Box>
       </Container>
     </>

@@ -3,7 +3,7 @@
 import ApiList from "@/components/api-list";
 import OutlinedCard from "@/components/card";
 import BasicPopover from "@/components/popover";
-import DataTable from "@/components/table";
+import DataTable from "@/components/DataTable";
 import EnhancedTable from "@/components/table";
 import TableTest from "@/components/DataTable";
 import {
@@ -18,59 +18,26 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ApiCard from "@/components/api-card";
+import { Category, Color, Product, Size } from "@prisma/client";
+import TextPopOver from "@/components/text-popover";
 
-export default function ProductMain() {
+export default function ProductMain({
+  data,
+  categories,
+  colors,
+  sizes,
+}: {
+  data: Product[];
+  categories: Category[];
+  colors: Color[];
+  sizes: Size[];
+}) {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const sm = useMediaQuery("(min-width:1200px)");
 
   const router = useRouter();
   const params = useParams();
-
-  const data = [
-    {
-      productName: "shoe-1",
-      archived: "true",
-      featured: "true",
-      price: "200",
-      category: "shoes",
-      date: new Intl.DateTimeFormat().format(Date.now()),
-      button: <BasicPopover />,
-    },
-  ];
-
-  const columns = [
-    {
-      accessorKey: "productName",
-      header: "product name",
-      size: 150,
-    },
-    {
-      accessorKey: "archived",
-      header: "archived",
-      size: 150,
-    },
-    {
-      accessorKey: "featured",
-      header: "featured",
-      size: 150,
-    },
-    {
-      accessorKey: "price",
-      header: "price",
-      size: 150,
-    },
-    {
-      accessorKey: "category",
-      header: "category",
-      size: 150,
-    },
-    {
-      accessorKey: "date",
-      header: "date",
-      size: 150,
-    },
-  ];
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -110,23 +77,56 @@ export default function ProductMain() {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          onClick={() => router.push(`/${params.storeId}/products/new`)}
-          sx={{
-            backgroundColor: buttonColorMode,
-            color: buttonTextMode,
-            fontWeight: "bold",
-            ":hover": {
-              backgroundColor: hoverColorMode,
-              color: hoverTextMode,
-            },
-            height: "35px",
-            width: "150px",
-          }}
-        >
-          Add new
-        </Button>
+        <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
+          <Button
+            disabled={categories && colors && sizes ? true : false}
+            variant="contained"
+            onClick={() => router.push(`/${params.storeId}/products/new`)}
+            sx={{
+              backgroundColor: buttonColorMode,
+              color: buttonTextMode,
+              fontWeight: "bold",
+              ":hover": {
+                backgroundColor: hoverColorMode,
+                color: hoverTextMode,
+              },
+              height: "35px",
+              width: "200px",
+            }}
+          >
+            {categories.length === 0 &&
+            colors.length === 0 &&
+            sizes.length === 0
+              ? "MISSING INFO"
+              : "ADD NEW"}
+          </Button>
+
+          <Box sx={{ display: "flex", gap: "2px" }}>
+            {[
+              {
+                message: "* Categories Missing",
+                popoverMessage: `No categories found. Go to Categories section to add Category.`,
+                data: categories,
+              },
+              {
+                message: "* Colors Missing",
+                popoverMessage: `No Colors found. Go to Colors section to add Color.`,
+                data: colors,
+              },
+              {
+                message: "* Sizes Missing",
+                popoverMessage: `No Sizes found. Go to Sizes section to add Size.`,
+                data: sizes,
+              },
+            ].map((data) => (
+              <TextPopOver
+                message={data.message}
+                popoverMessage={data.popoverMessage}
+                data={data.data}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
       <Divider
         sx={{
@@ -139,7 +139,7 @@ export default function ProductMain() {
       />
 
       {/* TABLE HERE */}
-      <TableTest cols={columns} data={data} />
+      <DataTable dataType="products" data={data} />
 
       <Box
         sx={{

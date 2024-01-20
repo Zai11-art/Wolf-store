@@ -8,6 +8,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckIcon from "@mui/icons-material/Check";
 import SimpleCharts from "@/components/bar-chart";
+import PieActiveArc from "@/components/pie-chart";
 
 const DashBoardPage = () => {
   const sm = useMediaQuery("(min-width:1000px)");
@@ -36,10 +37,61 @@ const DashBoardPage = () => {
   return (
     <Container
       maxWidth={false}
-      sx={{ display: "flex", flexDirection: "column", marginTop: "25px" }}
+      sx={{
+        gap: 2,
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "25px",
+      }}
     >
       <Box>
         <BasicBreadcrumbs />
+      </Box>
+
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          gap: 2,
+          flexDirection: sm ? "row" : "column",
+        }}
+      >
+        <Card
+          variant="outlined"
+          sx={{
+            width: sm ? "70%" : "100%",
+            height: "500px",
+            borderRadius: 3,
+            boxShadow: 4,
+            "&: hover": {
+              transform: "scale(1.005)",
+              transition: "all ease-in-out  0.15s ",
+            },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <SimpleCharts height={sm ? 600 : 500} width={sm ? 1800 : 1000} />
+        </Card>
+        <Card
+          variant="outlined"
+          sx={{
+            width: sm ? "30%" : "100%",
+            height: "500px",
+            borderRadius: 3,
+            boxShadow: 4,
+            "&: hover": {
+              transform: "scale(1.005)",
+              transition: "all ease-in-out  0.15s ",
+            },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <PieActiveArc height={sm ? 600 : 500} width={sm ? 800 : 500} />
+        </Card>
       </Box>
       <Box
         sx={{
@@ -58,23 +110,6 @@ const DashBoardPage = () => {
             icon={card?.Icon}
           />
         ))}
-      </Box>
-      <Box>
-        <Card
-          variant="outlined"
-          sx={{
-            width: "100%",
-            borderRadius: 3,
-            boxShadow: 4,
-            "&: hover": {
-              transform: "scale(1.005)",
-              transition: "all ease-in-out  0.15s ",
-            },
-            display: "flex",
-          }}
-        >
-          <SimpleCharts height={sm ? 600 : 500} width={sm ? 1800 : 1000} />
-        </Card>
       </Box>
     </Container>
   );

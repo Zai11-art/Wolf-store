@@ -13,54 +13,17 @@ import {
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Order } from "@prisma/client";
+import DataTable from "@/components/DataTable";
 
 interface OrderProps {
   data: Order[];
 }
 
 const OrdersMain: React.FC<OrderProps> = ({ data }) => {
+  console.log(data);
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const sm = useMediaQuery("(min-width:1200px)");
-
-  // TO BE CHANGED AND FETCHED FROM
-  //   const data = [
-  //     {
-  //       products: "shoes",
-  //       phone: "billboard1",
-  //       address: "billboard1",
-  //       totalPrice: "200",
-  //       paid: "true",
-  //     },
-  //   ];
-
-  const columns = [
-    {
-      accessorKey: "products",
-      header: "products",
-      size: 150,
-    },
-    {
-      accessorKey: "phone",
-      header: "phone",
-      size: 150,
-    },
-    {
-      accessorKey: "address",
-      header: "address",
-      size: 150,
-    },
-    {
-      accessorKey: "totalPrice",
-      header: "total price",
-      size: 150,
-    },
-    {
-      accessorKey: "paid",
-      header: "paid",
-      size: 150,
-    },
-  ];
 
   return (
     <Container
@@ -106,7 +69,7 @@ const OrdersMain: React.FC<OrderProps> = ({ data }) => {
       />
 
       {/* TABLE HERE */}
-      <TableTest cols={columns} data={data ? data : []} />
+      <DataTable dataType="orders" data={data || []} />
 
       {/* API SECTION */}
     </Container>

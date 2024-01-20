@@ -24,6 +24,7 @@ export default function OutlinedCard({
       <Card
         variant="outlined"
         sx={{
+          paddingY: '15px',
           borderRadius: 3,
           boxShadow: 4,
           "&: hover": {

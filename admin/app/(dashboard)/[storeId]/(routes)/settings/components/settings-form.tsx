@@ -8,6 +8,7 @@ import {
   Divider,
   Button,
   TextField,
+  useMediaQuery,
 } from "@mui/material";
 
 // React hook form
@@ -25,6 +26,7 @@ import { toast } from "react-toastify";
 import { useRoot } from "@/hooks/use-root";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningDialog from "@/components/warning-dialog";
+import { Formik } from "formik";
 
 interface FormValue {
   name: string;
@@ -46,6 +48,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
   console.log(data);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const sm = useMediaQuery("(min-width:700px)");
 
   const theme = useTheme();
   const params = useParams();
@@ -62,21 +65,16 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
   const hoverColorMode2 = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode2 = theme.palette.mode === "dark" ? "white" : " black";
 
-  const form = useForm<SettingsFormValuesTypes>({
-    resolver: yupResolver(formSchema),
-    defaultValues: {
-      name: "",
-    },
-  });
-
-  const { register, handleSubmit, formState } = form;
-  const { errors } = formState;
+  const initialValues = {
+    name: `${data ? data?.name : ""}`,
+  };
 
   // FIX ROUTES
   const onSubmit = async (payload: SettingsFormValuesTypes) => {
     try {
       setLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, payload);
+      router.push(`/${params.storeId}`);
       router.refresh();
       toast.success("Submitted successfully");
     } catch (error) {
@@ -105,12 +103,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
 
   return (
     <>
-      <WarningDialog
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      />
+      <WarningDialog loading={loading} />
       <Container
         maxWidth={false}
         sx={{ display: "flex", flexDirection: "column" }}
@@ -182,44 +175,77 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
 
           {/* DATE SECTIONS */}
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              {/* <Box sx={{ marginBottom: "30px" }}>
-           
-          </Box> */}
+            <Formik
+              onSubmit={onSubmit}
+              initialValues={initialValues}
+              validationSchema={formSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldValue,
+                resetForm,
+              }) => (
+                <form onSubmit={handleSubmit} noValidate>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "18px",
+                      width: "100%",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        marginY: sm ? "20px" : null,
+                        width: sm ? null : "100%",
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
+                        Store Name
+                      </Typography>
+                      <TextField
+                        value={values.name}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        error={Boolean(touched.name) && Boolean(errors.name)}
+                        helperText={touched.name && errors.name}
+                        id="outlined-basic"
+                        label="Name"
+                        variant="outlined"
+                        name="name"
+                        required
+                        sx={{ width: sm ? "400px" : null, display: "flex" }}
+                      />
+                    </Box>
+                  </Box>
 
-              <Box sx={{ marginY: "30px" }}>
-                <Typography sx={{ fontWeight: "bold", marginY: "15px" }}>
-                  Store name
-                </Typography>
-                <TextField
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
-                  id="outlined-basic"
-                  label="Placard label"
-                  variant="outlined"
-                  required
-                  {...register("name", { required: "Name is required" })}
-                />
-              </Box>
-              <Box sx={{ marginBottom: "30px" }}>
-                <Button
-                  sx={{
-                    backgroundColor: buttonColorMode2,
-                    color: buttonTextMode2,
-                    fontWeight: "bold",
-                    ":hover": {
-                      backgroundColor: hoverColorMode2,
-                      color: hoverTextMode2,
-                    },
-                    fontSize: "13.5px",
-                    paddingY: "4px",
-                  }}
-                  type="submit"
-                >
-                  Add Store
-                </Button>
-              </Box>
-            </form>
+                  <Box sx={{ marginY: "30px" }}>
+                    <Button
+                      disabled={loading}
+                      sx={{
+                        backgroundColor: buttonColorMode2,
+                        color: buttonTextMode2,
+                        fontWeight: "bold",
+                        ":hover": {
+                          backgroundColor: hoverColorMode2,
+                          color: hoverTextMode2,
+                        },
+                        fontSize: "13.5px",
+                        paddingY: "4px",
+                      }}
+                      type="submit"
+                    >
+                      {data ? "UPDATE" : "CREATE"}
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
           </Box>
         </div>
         <ApiCard
