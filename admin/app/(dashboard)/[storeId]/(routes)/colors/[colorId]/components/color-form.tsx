@@ -78,8 +78,8 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
       } else {
         await axios.post(`/api/${params.storeId}/colors`, payload);
       }
-      router.refresh();
       router.push(`/${params.storeId}/colors`);
+      router.refresh();
       toast.success("Submitted successfully.");
     } catch (error) {
       console.log("[ERROR_SUBMIT_COLORFORM]", error);

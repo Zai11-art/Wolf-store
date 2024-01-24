@@ -5,9 +5,17 @@ import Container from "@mui/material/Container";
 import Placard from "@/components/placard";
 import Image from "next/image";
 import Catalogue from "@/components/catalouge";
+import {
+  getAllProducts,
+  getPlacards,
+  getProducts,
+  getSizes,
+} from "@/fetchers/fetch-data";
+import { Category } from "@/types";
 
-const page = () => {
-  // FETCHING DATA FUNCTIONS
+const page = async () => {
+  const products = await getProducts({ isFeatured: true });
+  console.log(products);
 
   return (
     <Container

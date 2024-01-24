@@ -86,6 +86,14 @@ export async function DELETE(
         id: params.storeId,
         userId: userId,
       },
+      include: {
+        placards: true,
+        categories: true,
+        colors: true,
+        sizes: true,
+        products: true,
+        orders: true,
+      },
     });
 
     return NextResponse.json(deletedStore);

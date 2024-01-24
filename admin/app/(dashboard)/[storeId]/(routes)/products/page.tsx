@@ -1,5 +1,7 @@
 import prismadb from "@/lib/prismadb";
 import { Container } from "@mui/material";
+import { Product } from "@prisma/client";
+import { format } from "date-fns";
 import ProductMain from "./components/ProductMain";
 
 export default async function ProductsPage({
@@ -11,7 +13,17 @@ export default async function ProductsPage({
     where: {
       storeId: params.storeId,
     },
+    include: {
+      category: true,
+      size: true,
+      color: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
+
+  console.log(products);
 
   const categories = await prismadb.category.findMany({
     where: {
@@ -31,13 +43,25 @@ export default async function ProductsPage({
     },
   });
 
+  const parsedProducts: Product[] = products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    color: product.color.name,
+    size: product.size.name,
+    category: product.category.name,
+    isFeatured: `${product.isFeatured}`,
+    isArchived: `${product.isArchived}`,
+    createdAt: format(product.createdAt, "MMMM do, yyyy"),
+  }));
+
   return (
     <Container maxWidth={false}>
       <ProductMain
         categories={categories}
         colors={colors}
         sizes={sizes}
-        data={products}
+        data={parsedProducts}
       />
     </Container>
   );

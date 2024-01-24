@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import ProductCard from "./product-card";
 import Grid from "@mui/material/Grid";
+import { Product } from "@/types";
 
 const dummydata = [
   {
@@ -30,7 +31,8 @@ const dummydata = [
   },
 ];
 
-const Catalogue = ({ title }: { title: string }) => {
+const Catalogue = ({ title, sizes }: { title: string; sizes: Product[] }) => {
+  console.log(sizes);
   return (
     <Container
       maxWidth={false}

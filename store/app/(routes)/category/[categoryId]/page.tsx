@@ -1,5 +1,6 @@
 import Placard from "@/components/placard";
 import {
+  getAllProducts,
   getCategory,
   getColors,
   getProducts,
@@ -30,6 +31,8 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
     colorId: searchParams.sizeId,
   });
 
+  const productsAll = await getAllProducts();
+
   const sizes = await getSizes();
   const colors = await getColors();
   const category = await getCategory(params.categoryId);
@@ -54,15 +57,10 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
       id: "colors2",
       label: "colors2",
     },
-    {
-      id: "colors2",
-      label: "colors2",
-    },
-    {
-      id: "colors2",
-      label: "colors2",
-    },
   ];
+
+  // store feed
+  console.log(productsAll);
 
   return (
     <Container
@@ -78,7 +76,11 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
       }}
     >
       <Placard />
-      <CategoryProduct sizes={sizesDummy} colors={colorsDummy} />
+      {/* <CategoryProduct
+        products={products}
+        sizes={sizesDummy}
+        colors={colorsDummy}
+      /> */}
     </Container>
   );
 };

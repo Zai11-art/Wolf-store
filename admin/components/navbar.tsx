@@ -37,6 +37,8 @@ import CategoryIcon from "@mui/icons-material/Category";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ColorLensIcon from '@mui/icons-material/ColorLens';
+import PhotoSizeSelectSmallIcon from '@mui/icons-material/PhotoSizeSelectSmall';
 
 // DROP DOWN
 import DropDown from "./dropdown";
@@ -79,13 +81,13 @@ function ResponsiveAppBar({ stores }: StoreProps) {
     },
     {
       label: "Colors",
-      Icon: <CardGiftcardIcon />,
+      Icon: <ColorLensIcon />,
       href: `/${params.storeId}/colors`,
       active: pathName === `/${params.storeId}/colors`,
     },
     {
       label: "Size",
-      Icon: <CardGiftcardIcon />,
+      Icon: <PhotoSizeSelectSmallIcon />,
       href: `/${params.storeId}/sizes`,
       active: pathName === `/${params.storeId}/sizes`,
     },

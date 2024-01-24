@@ -41,14 +41,7 @@ import cartState from "@/hooks/cart-state";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
-interface AppbarProps {
-  data: "";
-}
-
-function ResponsiveAppBar({ dataFetched }) {
+function ResponsiveAppBar() {
   const [isMounted, setisMounted] = useState(false);
   const colorMode = React.useContext(ColorModeContext);
   const md = useMediaQuery("(min-width:500px)");
@@ -61,11 +54,11 @@ function ResponsiveAppBar({ dataFetched }) {
   // FOR DUMMY DATA
   const dummyData = [
     {
-      label: "Dashboards",
+      label: "Products",
       Icon: <DashboardIcon />,
       // href: `/category/${}`,
       // active: pathName === `/${params.storeId}`,
-      id: "camera1",
+      id: "products",
     },
     {
       label: "Placards",

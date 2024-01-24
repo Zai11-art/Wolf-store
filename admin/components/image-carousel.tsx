@@ -11,10 +11,11 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 // @ts-ignore
 import { autoPlay } from "react-swipeable-views-utils";
+import { Image } from "@prisma/client";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-function SwipeableTextMobileStepper({ image }: { image: string[] }) {
+function SwipeableTextMobileStepper({ image }: { image: Image[] }) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = image.length;
@@ -48,8 +49,8 @@ function SwipeableTextMobileStepper({ image }: { image: string[] }) {
           onChangeIndex={handleStepChange}
           enableMouseEvents
         >
-          {image.map((step: string, index: number) => (
-            <div key={step}>
+          {image.map((step, index: number) => (
+            <div key={step?.id}>
               {Math.abs(activeStep - index) <= 2 ? (
                 <Box
                   component="img"
@@ -58,8 +59,7 @@ function SwipeableTextMobileStepper({ image }: { image: string[] }) {
                     width: "100%",
                     display: "flex",
                   }}
-                  src={step}
-                  alt={step}
+                  src={step.url}
                 />
               ) : null}
             </div>

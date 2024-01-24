@@ -1,5 +1,5 @@
 import React from "react";
-import { getProduct, getProducts } from "@/fetchers/fetch-data";
+import { getProduct, getProducts, getSizes } from "@/fetchers/fetch-data";
 import { Container, Box, useMediaQuery } from "@mui/material";
 import Catalogue from "@/components/catalouge";
 import ImageSLider from "@/components/gallery";

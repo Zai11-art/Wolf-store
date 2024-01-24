@@ -6,16 +6,21 @@ interface DataProps {
   method: (storeId: string, id: string) => void;
 }
 
+interface DataPropsOnEdit {
+  method: (storeId: string) => void;
+}
+
 interface useWarningDialog {
   isOpen: boolean;
   data?: DataProps;
-  onOpen: (data: DataProps) => void;
+  onOpen: (data: DataProps | DataPropsOnEdit) => void;
   onClose: () => void;
 }
 
 export const useWarningDialog = create<useWarningDialog>((set) => ({
   isOpen: false,
   data: undefined,
-  onOpen: (data: DataProps) => set({ data: data, isOpen: true }),
+  onOpen: (data: DataProps | DataPropsOnEdit) =>
+    set({ data: data, isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }));

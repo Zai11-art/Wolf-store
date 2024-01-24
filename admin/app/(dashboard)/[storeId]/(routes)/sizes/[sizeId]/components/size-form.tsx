@@ -74,8 +74,8 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
       } else {
         await axios.post(`/api/${params.storeId}/sizes`, payload);
       }
-      router.refresh();
       router.push(`/${params.storeId}/sizes`);
+      router.refresh();
       toast.success("Submitted successfully.");
     } catch (error) {
       console.log("[ERROR_SUBMIT_SIZEFORM]", error);

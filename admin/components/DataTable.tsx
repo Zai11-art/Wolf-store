@@ -3,11 +3,12 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import SplitButton from "./settings-dropdown";
 import WarningDialog from "./warning-dialog";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const ButtonSet = () => {
   return <Button></Button>;
@@ -61,13 +62,24 @@ const DataTable = ({
     if (dataType === "categories") {
       return [
         {
-          accessorKey: "placardLabel", //access nested data with dot notation
-          header: "Placard label",
-          size: 150,
-        },
-        {
           accessorKey: "id", //access nested data with dot notation
           header: "Category Id",
+          size: 150,
+          enableClickToCopy: true,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
+        },
+        {
+          accessorKey: "placardLabel", //access nested data with dot notation
+          header: "Placard label",
           size: 150,
         },
         {
@@ -89,19 +101,44 @@ const DataTable = ({
     if (dataType === "colors") {
       return [
         {
-          accessorKey: "name", //access nested data with dot notation
-          header: "Color Name",
-          size: 150,
-        },
-        {
           accessorKey: "id", //access nested data with dot notation
           header: "Color Id",
+          size: 150,
+          enableClickToCopy: true,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
+        },
+        {
+          accessorKey: "name", //access nested data with dot notation
+          header: "Name",
           size: 150,
         },
         {
           accessorKey: "value", //access nested data with dot notation
-          header: "Color Value",
+          header: "Value",
           size: 150,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Box
+                sx={{
+                  border: "solid 0.5px black",
+                  borderRadius: "100%",
+                  width: "25px",
+                  height: "25px",
+                  backgroundColor: `${cell.renderValue()}`,
+                }}
+              />
+              <span>{`${cell.renderValue()}`}</span>
+            </Box>
+          ),
         },
         {
           accessorKey: "createdAt", //access nested data with dot notation
@@ -122,18 +159,29 @@ const DataTable = ({
     if (dataType === "sizes") {
       return [
         {
-          accessorKey: "name", //access nested data with dot notation
-          header: "Size Name",
-          size: 150,
-        },
-        {
           accessorKey: "id", //access nested data with dot notation
           header: "Size Id",
+          size: 150,
+          enableClickToCopy: true,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
+        },
+        {
+          accessorKey: "name", //access nested data with dot notation
+          header: "Name",
           size: 150,
         },
         {
           accessorKey: "value", //access nested data with dot notation
-          header: "Size Value",
+          header: "Value",
           size: 150,
         },
         {
@@ -203,18 +251,29 @@ const DataTable = ({
     if (dataType === "products") {
       return [
         {
-          accessorKey: "id", //access nested data with dot notation
-          header: "Order Id",
-          size: 150,
-        },
-        {
-          accessorKey: "store", //access nested data with dot notation
-          header: "Store",
-          size: 150,
+          accessorKey: "id",
+          header: "Product Id",
+          enableClickToCopy: true,
+          size: 175,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
         },
         {
           accessorKey: "name", //access nested data with dot notation
           header: "Product Name",
+          size: 150,
+        },
+        {
+          accessorKey: "size", //access nested data with dot notation
+          header: "Size",
           size: 150,
         },
         {
@@ -223,8 +282,8 @@ const DataTable = ({
           size: 150,
         },
         {
-          accessorKey: "size", //access nested data with dot notation
-          header: "Size",
+          accessorKey: "category", //access nested data with dot notation
+          header: "Category",
           size: 150,
         },
         {

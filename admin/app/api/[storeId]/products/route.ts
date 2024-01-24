@@ -4,28 +4,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { storeId: string; sizeId: string } }
+  { params }: { params: { storeId: string } }
 ) {
   try {
-    const { userId } = auth();
-    const { searchParams } = new URL(req.url);
-    const categoryId = searchParams.get("categoryId") || undefined;
-    const colorId = searchParams.get("colorId") || undefined;
-    const sizeId = searchParams.get("sizeId") || undefined;
-    const isFeatured = searchParams.get("isFeatured");
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const products = await prismadb.product.findMany({
       where: {
         storeId: params.storeId,
-        categoryId: categoryId,
-        colorId: colorId,
-        sizeId: sizeId,
-        isFeatured: isFeatured ? true : undefined,
-        isArchived: false,
       },
       include: {
         images: true,
@@ -44,6 +28,49 @@ export async function GET(
     return new NextResponse("Server Error", { status: 500 });
   }
 }
+
+// export async function GET(
+//   req: Request,
+//   { params }: { params: { storeId: string; sizeId: string } }
+// ) {
+//   try {
+//     const { userId } = auth();
+//     const { searchParams } = new URL(req.url);
+//     const categoryId = searchParams.get("categoryId") || undefined;
+//     const colorId = searchParams.get("colorId") || undefined;
+//     const sizeId = searchParams.get("sizeId") || undefined;
+//     const isFeatured = searchParams.get("isFeatured");
+
+//     if (!userId) {
+//       return new NextResponse("Unauthorized", { status: 401 });
+//     }
+
+//     const products = await prismadb.product.findMany({
+//       where: {
+//         storeId: params.storeId,
+//         categoryId: categoryId,
+//         colorId: colorId,
+//         sizeId: sizeId,
+//         isFeatured: isFeatured ? true : undefined,
+//         isArchived: false,
+//       },
+//       include: {
+//         images: true,
+//         category: true,
+//         color: true,
+//         size: true,
+//       },
+//       orderBy: {
+//         createdAt: "desc",
+//       },
+//     });
+
+//     return NextResponse.json(products);
+//   } catch (error) {
+//     console.log("[PRODUCT_GET]", error);
+//     return new NextResponse("Server Error", { status: 500 });
+//   }
+// }
 
 export async function POST(
   req: Request,
@@ -64,6 +91,19 @@ export async function POST(
       isFeatured,
       isArchived,
     } = body;
+
+    const dataHere = {
+      name,
+      images,
+      price,
+      categoryId,
+      colorId,
+      sizeId,
+      isFeatured,
+      isArchived,
+    };
+
+    console.log(dataHere);
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -86,14 +126,7 @@ export async function POST(
     if (!sizeId) {
       return new NextResponse("Size ID is required", { status: 403 });
     }
-    if (!isFeatured) {
-      return new NextResponse("Feature Selection is required", { status: 403 });
-    }
-    if (!isArchived) {
-      return new NextResponse("Archived Selection is required", {
-        status: 403,
-      });
-    }
+
     if (!params.storeId) {
       return new NextResponse("Store ID is required", { status: 400 });
     }

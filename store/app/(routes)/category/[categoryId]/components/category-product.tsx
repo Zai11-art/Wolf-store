@@ -5,9 +5,10 @@ import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import FilterCol from "./filter";
 
-const CategoryProduct = ({ sizes, colors }) => {
+const CategoryProduct = ({ sizes, colors, products }) => {
   const md = useMediaQuery("(min-width:1200px)");
   const theme = useTheme();
+  console.log(products);
 
   const dummydataProduct = [
     {

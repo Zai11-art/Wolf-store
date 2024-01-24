@@ -6,6 +6,7 @@ import {
   Size,
   ParamQueryProps,
 } from "@/types";
+import axios from "axios";
 import qs from "query-string";
 
 const API_URL = `${process.env.API_URL}`;
@@ -69,7 +70,14 @@ export const getProducts = async (obj: ParamQueryProps): Promise<Product[]> => {
 
 // GET ALL SIZES
 export const getSizes = async (): Promise<Size[]> => {
-  const response = await fetch(`${API_URL}/sizes`);
+  const response = await axios.get(`${API_URL}/sizes`);
 
-  return response.json();
+  return response.data;
+};
+
+// GET ALL PRODUCTS
+export const getAllProducts = async (): Promise<Size[]> => {
+  const response = await axios.get(`${API_URL}/products`);
+
+  return response.data;
 };

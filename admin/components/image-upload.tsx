@@ -9,6 +9,7 @@ import Image from "next/image";
 import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
 import SwipeableTextMobileStepper from "./image-carousel";
 import CloseIcon from "@mui/icons-material/Close";
+import { Image } from "@prisma/client";
 
 interface ImageUploadProps {
   disabled?: boolean;
@@ -35,18 +36,18 @@ const ImageUpload = ({
   ) => void;
 }) => {
   const [isMounted, setisMounted] = useState(false);
-  const [image, setImage] = useState([]);
+  const [imagesD, setImage] = useState<Image[]>([]);
   const md = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const lightmode = theme.palette.mode === "dark";
 
-  console.log(image);
+  console.log(imagesD);
 
   useEffect(() => {
     if (!isMounted) {
       setisMounted(true);
     }
-  }, []);
+  }, [imagesD]);
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -77,9 +78,9 @@ const ImageUpload = ({
           marginBottom: "20px",
         }}
       >
-        {image.length > 0 ? (
+        {imagesD.length > 0 ? (
           <>
-            <SwipeableTextMobileStepper image={image} />
+            <SwipeableTextMobileStepper image={imagesD} />
           </>
         ) : (
           <Box
@@ -105,16 +106,22 @@ const ImageUpload = ({
         options={{ multiple: true, maxFiles: 5 }}
         onUpload={(image) => {
           // @ts-ignore
-          setImage((prevImage) => [...prevImage, image?.info?.secure_url]);
+          setImage((prevImage) => [
+            ...prevImage,
+            { url: image?.info?.secure_url },
+          ]);
           // @ts-ignore
-          setFieldValue("imageUrl", image?.info?.secure_url);
+          setFieldValue("images", [
+            ...imagesD,
+            { url: image?.info?.secure_url },
+          ]);
         }}
         uploadPreset="br4qkmxz"
       >
         {({ open }) => {
           return (
             <>
-              {image.length === 0 && (
+              {imagesD.length === 0 && (
                 <Button
                   disabled={disabled}
                   variant="contained"
@@ -144,7 +151,7 @@ const ImageUpload = ({
         }}
       </CldUploadWidget>
 
-      {image.length > 0 && (
+      {imagesD.length > 0 && (
         <Button
           onClick={() => {
             setImage([]);

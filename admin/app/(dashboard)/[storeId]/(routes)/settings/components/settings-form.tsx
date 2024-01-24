@@ -27,6 +27,7 @@ import { useRoot } from "@/hooks/use-root";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningDialog from "@/components/warning-dialog";
 import { Formik } from "formik";
+import { useWarningDialog } from "@/hooks/use-edit-dialog";
 
 interface FormValue {
   name: string;
@@ -49,6 +50,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sm = useMediaQuery("(min-width:700px)");
+  const usewarningDialog = useWarningDialog();
 
   const theme = useTheme();
   const params = useParams();
@@ -144,7 +146,9 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
             </Box>
             {data && (
               <Button
-                onClick={() => setOpen(true)}
+                onClick={() =>
+                  usewarningDialog.onOpen({ method: () => onDelete() })
+                }
                 variant="contained"
                 sx={{
                   backgroundColor: buttonColorMode,

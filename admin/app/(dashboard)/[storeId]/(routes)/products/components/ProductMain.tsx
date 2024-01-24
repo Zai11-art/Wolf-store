@@ -36,6 +36,8 @@ export default function ProductMain({
   const [loading, setLoading] = useState(false);
   const sm = useMediaQuery("(min-width:1200px)");
 
+  console.log(data);
+
   const router = useRouter();
   const params = useParams();
 
@@ -79,7 +81,13 @@ export default function ProductMain({
 
         <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
           <Button
-            disabled={categories && colors && sizes ? true : false}
+            disabled={
+              categories.length === 0 &&
+              colors.length === 0 &&
+              sizes.length === 0
+                ? true
+                : false
+            }
             variant="contained"
             onClick={() => router.push(`/${params.storeId}/products/new`)}
             sx={{
@@ -91,7 +99,7 @@ export default function ProductMain({
                 color: hoverTextMode,
               },
               height: "35px",
-              width: "200px",
+              width: "120px",
             }}
           >
             {categories.length === 0 &&
@@ -101,31 +109,35 @@ export default function ProductMain({
               : "ADD NEW"}
           </Button>
 
-          <Box sx={{ display: "flex", gap: "2px" }}>
-            {[
-              {
-                message: "* Categories Missing",
-                popoverMessage: `No categories found. Go to Categories section to add Category.`,
-                data: categories,
-              },
-              {
-                message: "* Colors Missing",
-                popoverMessage: `No Colors found. Go to Colors section to add Color.`,
-                data: colors,
-              },
-              {
-                message: "* Sizes Missing",
-                popoverMessage: `No Sizes found. Go to Sizes section to add Size.`,
-                data: sizes,
-              },
-            ].map((data) => (
-              <TextPopOver
-                message={data.message}
-                popoverMessage={data.popoverMessage}
-                data={data.data}
-              />
-            ))}
-          </Box>
+          {categories.length === 0 &&
+            colors.length === 0 &&
+            sizes.length === 0 && (
+              <Box sx={{ display: "flex", gap: "2px" }}>
+                {[
+                  {
+                    message: "* Categories Missing",
+                    popoverMessage: `No categories found. Go to Categories section to add Category.`,
+                    data: categories,
+                  },
+                  {
+                    message: "* Colors Missing",
+                    popoverMessage: `No Colors found. Go to Colors section to add Color.`,
+                    data: colors,
+                  },
+                  {
+                    message: "* Sizes Missing",
+                    popoverMessage: `No Sizes found. Go to Sizes section to add Size.`,
+                    data: sizes,
+                  },
+                ].map((data) => (
+                  <TextPopOver
+                    message={data.message}
+                    popoverMessage={data.popoverMessage}
+                    data={data.data}
+                  />
+                ))}
+              </Box>
+            )}
         </Box>
       </Box>
       <Divider

@@ -15,6 +15,8 @@ import {
   FormHelperText,
   SelectChangeEvent,
   useMediaQuery,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 // React hook form
@@ -46,7 +48,11 @@ interface ProductFormProps {
 const formSchema = yup
   .object({
     name: yup.string().min(1),
-    images: yup.array().of(yup.object({ url: yup.string() })),
+    images: yup
+      .array()
+      .of(yup.object().shape({ url: yup.string() }))
+      .min(1)
+      .max(5),
     price: yup.number().min(1),
     categoryId: yup.string().min(1),
     colorId: yup.string().min(1),
@@ -90,17 +96,18 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
   const initialValue = {
     name: `${data ? data?.name : ""}`,
-    images: [],
+    images: [{}],
     price: `${data ? data?.price : ""}`,
     categoryId: `${data ? data?.categoryId : ""}`,
     colorId: `${data ? data?.colorId : ""}`,
     sizeId: `${data ? data?.sizeId : ""}`,
-    isFeatured: `${data ? data?.isFeatured : false}`,
-    isArchived: `${data ? data?.isArchived : false}`,
+    isFeatured: data ? data?.isFeatured : false,
+    isArchived: data ? data?.isArchived : false,
   };
 
   // FIX ROUTES
   const onSubmit = async (payload: ProductFormValuesTypes) => {
+    console.log(payload);
     try {
       setLoading(true);
       if (data) {
@@ -241,6 +248,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     flexDirection: md ? "row" : "column",
                   }}
                 >
+                  {/* IMAGE SECTION */}
                   <Box
                     sx={{
                       width: "100%",
@@ -289,7 +297,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                         </Typography>
                         <TextField
                           sx={{ width: "100%" }}
-                          label="Placard label"
+                          label="Name"
                           onBlur={handleBlur}
                           onChange={handleChange}
                           value={values.name}
@@ -328,6 +336,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                       </Box>
                     </Box>
 
+                    {/* CATEGORY, SIZES , COLORS */}
                     <Box
                       sx={{
                         display: "flex",
@@ -382,7 +391,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                                 <em>None</em>
                               </MenuItem>
                               {categories.map((cat) => (
-                                <MenuItem value={cat.name}>{cat.name}</MenuItem>
+                                <MenuItem value={cat.id}>{cat.name}</MenuItem>
                               ))}
                             </Select>
                             <FormHelperText>Disabled</FormHelperText>
@@ -426,9 +435,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                                 <em>None</em>
                               </MenuItem>
                               {sizes.map((size) => (
-                                <MenuItem value={size.name}>
-                                  {size.name}
-                                </MenuItem>
+                                <MenuItem value={size.id}>{size.name}</MenuItem>
                               ))}
                             </Select>
                             <FormHelperText>Disabled</FormHelperText>
@@ -473,7 +480,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                                 <em>None</em>
                               </MenuItem>
                               {colors.map((color) => (
-                                <MenuItem value={color.name}>
+                                <MenuItem value={color.id}>
                                   {color.name}
                                 </MenuItem>
                               ))}
@@ -482,26 +489,87 @@ const ProductForm: React.FC<ProductFormProps> = ({
                           </FormControl>
                         </Box>
                       </Box>
+                    </Box>
 
-                      <Box>
-                        <Button
-                          sx={{
-                            backgroundColor: buttonColorMode2,
-                            color: buttonTextMode2,
-                            fontWeight: "bold",
-                            ":hover": {
-                              backgroundColor: hoverColorMode2,
-                              color: hoverTextMode2,
-                            },
-                            fontSize: "13.5px",
-                            paddingY: "4px",
-                            paddingX: "50px",
-                          }}
-                          type="submit"
+                    {/* FEATURED AND ARCHIVED */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        gap: 5,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
                         >
-                          {data ? "UPDATE" : "CREATE"}
-                        </Button>
+                          Feature Product?
+                        </Typography>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              sx={{ width: "100%" }}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              value={values.isFeatured}
+                              name="isFeatured"
+                              checked={values.isFeatured}
+                            />
+                          }
+                          label="Featured"
+                        />
                       </Box>
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
+                        >
+                          Archive Product?
+                        </Typography>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              sx={{ width: "100%" }}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              value={values.isArchived}
+                              name="isArchived"
+                              checked={values.isArchived}
+                            />
+                          }
+                          label="Archived"
+                        />
+                      </Box>
+                    </Box>
+
+                    {/* SUBMIT BUTTON */}
+                    <Box sx={{ marginTop: 3 }}>
+                      <Button
+                        sx={{
+                          backgroundColor: buttonColorMode2,
+                          color: buttonTextMode2,
+                          fontWeight: "bold",
+                          ":hover": {
+                            backgroundColor: hoverColorMode2,
+                            color: hoverTextMode2,
+                          },
+                          fontSize: "13.5px",
+                          paddingY: "4px",
+                          paddingX: "50px",
+                        }}
+                        type="submit"
+                      >
+                        {data ? "UPDATE" : "CREATE"}
+                      </Button>
                     </Box>
                   </Box>
                 </Box>
