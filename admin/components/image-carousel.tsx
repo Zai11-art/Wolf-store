@@ -18,7 +18,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 function SwipeableTextMobileStepper({ image }: { image: Image[] }) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = image.length;
+  const maxSteps = image?.length;
   const lightmode = theme.palette.mode === "dark";
 
   const handleNext = () => {

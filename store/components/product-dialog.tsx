@@ -21,31 +21,7 @@ import Typography from "@mui/material/Typography";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import cartState from "@/hooks/cart-state";
 import ImageSLider from "./gallery";
-
-const dummydata = [
-  {
-    id: "camera",
-    category: "tech",
-    name: "Nikon Z 1.4g",
-    price: "$100.00",
-    isFeatured: "hehe",
-    size: "Large",
-    color: "Black",
-    images:
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: "camera2",
-    category: "tech",
-    name: "Nikon Z 1.4g",
-    price: "$100.00",
-    isFeatured: "hehe",
-    size: "Large",
-    color: "Black",
-    images:
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-];
+import { Product } from "@/types";
 
 export default function ProductDialog() {
   const [open, setOpen] = useState(false);
@@ -55,7 +31,9 @@ export default function ProductDialog() {
   const theme = useTheme();
   const cart = cartState();
   const productModal = productPreviewModal();
-  const product = productPreviewModal((state) => state.data);
+  const product = productPreviewModal<Product | undefined>(
+    (state) => state.data
+  );
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -96,7 +74,7 @@ export default function ProductDialog() {
             width: "100%",
           }}
         >
-          <ImageSLider images={dummydata} />
+          <ImageSLider images={product.images} />
           {/* <CardMedia
             component="img"
             sx={{ width: md ? 400 : "100%" }}
@@ -178,7 +156,7 @@ export default function ProductDialog() {
                 component="div"
                 sx={{ fontFamily: "inherit" }}
               >
-                Size: {product.size}
+                Size: {product.size.name}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -186,7 +164,7 @@ export default function ProductDialog() {
                 component="div"
                 sx={{ fontFamily: "inherit" }}
               >
-                Color: {product.color}
+                Color: {product.color.name}
               </Typography>
             </CardContent>
 

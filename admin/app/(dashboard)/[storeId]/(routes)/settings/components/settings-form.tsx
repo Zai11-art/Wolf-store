@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 // React hook form
-import ImageUpload from "@/components/image-upload";
+import ImageUpload from "@/components/image-upload-multiple";
 import axios from "axios";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";

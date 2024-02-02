@@ -28,7 +28,7 @@ export default async function OrdersPage({
   const convertedOrders: Order[] | undefined = orders?.map((ord) => ({
     id: ord.id,
     storeId: ord.storeId,
-    isPaid: ord.isPaid,
+    isPaid: `${ord.isPaid}`,
     phone: ord.phone,
     address: ord.address,
     createdAt: format(ord.createdAt, "MMMM do, yyyy"),

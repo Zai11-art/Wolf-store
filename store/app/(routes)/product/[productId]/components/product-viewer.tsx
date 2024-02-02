@@ -4,6 +4,7 @@ import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import ImageSLider from "@/components/gallery";
 import ProductInfo from "@/components/product-info";
+import { Product } from "@/types";
 
 const dummyData = {
   id: "camera",
@@ -17,7 +18,7 @@ const dummyData = {
     "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 };
 
-const ProductViewer = () => {
+const ProductViewer = ({ product }: { product: Product }) => {
   const md = useMediaQuery("(min-width:800px)");
 
   return (
@@ -30,8 +31,8 @@ const ProductViewer = () => {
         flexDirection: md ? "row" : "column",
       }}
     >
-      <ImageSLider images={dummyData.images} />
-      <ProductInfo product={dummyData} />
+      <ImageSLider images={product.images} />
+      <ProductInfo product={product} />
     </Box>
   );
 };

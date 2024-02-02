@@ -22,8 +22,6 @@ export default async function PlacardsPage({
 
   console.log(params.storeId);
 
-  //   if (!placard) redirect(`/${params.storeId}`);
-
   return (
     <Container
       maxWidth={false}

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -6,33 +8,15 @@ import ProductCard from "./product-card";
 import Grid from "@mui/material/Grid";
 import { Product } from "@/types";
 
-const dummydata = [
-  {
-    id: "camera",
-    category: "tech",
-    name: "Nikon Z 1.4g",
-    price: "$100.00",
-    isFeatured: "hehe",
-    size: "Large",
-    color: "Black",
-    images:
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    id: "camera2",
-    category: "tech",
-    name: "Nikon Z 1.4g",
-    price: "$100.00",
-    isFeatured: "hehe",
-    size: "Large",
-    color: "Black",
-    images:
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-];
+const Catalogue = ({
+  title,
+  products,
+}: {
+  title: string;
+  products: Product[];
+}) => {
+  console.log(products);
 
-const Catalogue = ({ title, sizes }: { title: string; sizes: Product[] }) => {
-  console.log(sizes);
   return (
     <Container
       maxWidth={false}
@@ -52,10 +36,6 @@ const Catalogue = ({ title, sizes }: { title: string; sizes: Product[] }) => {
         {title}
       </Typography>
 
-      {/* <Box sx={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-        <ProductCard />
-      </Box> */}
-
       <Box
         sx={{
           width: "100%",
@@ -70,7 +50,7 @@ const Catalogue = ({ title, sizes }: { title: string; sizes: Product[] }) => {
           alignItems="center"
           sx={{ gap: "40px" }}
         >
-          {dummydata.map((item) => (
+          {products.map((item) => (
             <Grid>
               <ProductCard data={item} />
             </Grid>

@@ -4,26 +4,19 @@ import {
   getCategory,
   getColors,
   getProducts,
+  getProducts2,
   getSizes,
 } from "@/fetchers/fetch-data";
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import React from "react";
 import CategoryProduct from "./components/category-product";
-import FilterCol from "./components/filter";
 
-interface CategoryPageProps {
-  params: {
-    categoryId: string;
-  };
-  searchParams: {
-    colorId: string;
-    sizeId: string;
-  };
-}
-
-const CategoryPage: React.FC<CategoryPageProps> = async ({
+const CategoryPage = async ({
   params,
   searchParams,
+}: {
+  params: { categoryId: string };
+  searchParams: { colorId: string; sizeId: string };
 }) => {
   const products = await getProducts({
     categoryId: params.categoryId,
@@ -31,36 +24,19 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
     colorId: searchParams.sizeId,
   });
 
-  const productsAll = await getAllProducts();
+  const products2 = await getProducts2();
+
+  console.log("KOKO DE");
+  console.log(products);
+  console.log(products2);
+
+  // console.log("KOKO DE");
+  // console.log(searchParams.colorId);
+  // console.log(searchParams.sizeId);
 
   const sizes = await getSizes();
   const colors = await getColors();
   const category = await getCategory(params.categoryId);
-
-  const sizesDummy = [
-    {
-      id: "sizes1",
-      label: "sizes1",
-    },
-    {
-      id: "sizes2",
-      label: "sizes2",
-    },
-  ];
-
-  const colorsDummy = [
-    {
-      id: "colors1",
-      label: "colors1",
-    },
-    {
-      id: "colors2",
-      label: "colors2",
-    },
-  ];
-
-  // store feed
-  console.log(productsAll);
 
   return (
     <Container
@@ -75,12 +51,8 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
         // backgroundColor: "blue",
       }}
     >
-      <Placard />
-      {/* <CategoryProduct
-        products={products}
-        sizes={sizesDummy}
-        colors={colorsDummy}
-      /> */}
+      <Placard url={category.placard.imageUrl} />
+      <CategoryProduct products={products} sizes={sizes} colors={colors} />
     </Container>
   );
 };

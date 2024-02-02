@@ -10,9 +10,9 @@ import Typography from "@mui/material/Typography";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import productPreviewModal from "@/hooks/product-preview-modal";
 import cartState from "@/hooks/cart-state";
+import { Product } from "@/types";
 
-
-const ProductInfo = ({ product }) => {
+const ProductInfo = ({ product }: { product: Product }) => {
   const theme = useTheme();
   const cart = cartState();
   const md = useMediaQuery("(min-width:800px)");
@@ -64,7 +64,7 @@ const ProductInfo = ({ product }) => {
           color="text.primary"
           component="div"
         >
-          Price : {product.price}
+          Price : {`${parseInt(product.price).toFixed(2).toString()}`}
         </Typography>
       </Box>
       <CardContent
@@ -82,7 +82,7 @@ const ProductInfo = ({ product }) => {
           component="div"
           sx={{ fontFamily: "inherit" }}
         >
-          Size: {product.size}
+          Size: {product.size.name}
         </Typography>
         <Typography
           variant="subtitle1"
@@ -90,7 +90,7 @@ const ProductInfo = ({ product }) => {
           component="div"
           sx={{ fontFamily: "inherit" }}
         >
-          Color: {product.color}
+          Color: {product.color.name}
         </Typography>
       </CardContent>
 

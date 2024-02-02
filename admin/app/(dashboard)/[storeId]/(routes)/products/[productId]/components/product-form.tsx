@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 
 // React hook form
-import ImageUpload from "@/components/image-upload";
 import axios from "axios";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -33,6 +32,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
 import WarningDialog from "@/components/warning-dialog";
 import { Formik } from "formik";
+import ImageUploadMultiple from "@/components/image-upload-multiple";
 
 interface ProductFormProps {
   data:
@@ -96,7 +96,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
   const initialValue = {
     name: `${data ? data?.name : ""}`,
-    images: [{}],
+    images: data ? data.images : [{}],
     price: `${data ? data?.price : ""}`,
     categoryId: `${data ? data?.categoryId : ""}`,
     colorId: `${data ? data?.colorId : ""}`,
@@ -222,6 +222,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <Formik
             onSubmit={onSubmit}
             validationSchema={formSchema}
+            // @ts-ignore
             initialValues={initialValue}
           >
             {({
@@ -261,7 +262,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                     </Typography>
 
                     {/*FIXING: TO BE FIXED: FIND A WAY TO UPLOAD WITH THE FORM */}
-                    <ImageUpload
+                    <ImageUploadMultiple
                       // @ts-ignore
                       data={data}
                       disabled={loading}

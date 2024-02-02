@@ -7,11 +7,11 @@ export async function GET(
   { params }: { params: { storeId: string; placardId: string } }
 ) {
   try {
-    const { userId } = auth();
+    // const { userId } = auth();
 
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // if (!userId) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
 
     if (!params.placardId) {
       return new NextResponse("Store Id is required", { status: 403 });
@@ -20,9 +20,10 @@ export async function GET(
     const store = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId: userId,
       },
     });
+
+    console.log(store);
 
     if (!store) {
       return new NextResponse("Unauthorized", { status: 401 });

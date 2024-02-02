@@ -4,6 +4,7 @@ import { PieChart } from "@mui/x-charts/PieChart";
 interface PieChartProps {
   height: number;
   width: number;
+  pieData: { paidOrders: number; unPaidOrders: number };
 }
 
 const data = [
@@ -12,13 +13,22 @@ const data = [
   { id: 2, value: 20, label: "series C" },
 ];
 
-export default function PieActiveArc({ height, width }: PieChartProps) {
+export default function PieActiveArc({
+  height,
+  width,
+  pieData,
+}: PieChartProps) {
+  console.log(pieData);
+
   return (
     <PieChart
       sx={{ padding: 2, display: "flex" }}
       series={[
         {
-          data,
+          data: [
+            { id: 0, value: pieData?.paidOrders, label: "Paid Orders" },
+            { id: 1, value: pieData?.unPaidOrders, label: "Unpaid Orders" },
+          ],
           highlightScope: { faded: "global", highlighted: "item" },
           faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
         },

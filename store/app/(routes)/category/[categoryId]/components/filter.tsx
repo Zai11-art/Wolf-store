@@ -49,8 +49,6 @@ const FilterCol: React.FC<FilterColProps> = ({ data, name, key }) => {
     router.push(url);
   };
 
-  console.log(searchParams);
-
   return (
     <Box sx={{ marginBottom: "15px" }}>
       <Typography variant="h4" sx={{ fontFamily: "inherit", marginBottom: 1 }}>
@@ -75,11 +73,12 @@ const FilterCol: React.FC<FilterColProps> = ({ data, name, key }) => {
               padding: "8px",
               margin: "5px",
               fontSize: "0.8em",
+              opacity: selectedValue === tab.id ? 50 : 100,
             }}
             key={tab.id}
             onClick={() => onSelect(tab.id)}
           >
-            {tab.label}
+            {tab.name}
           </Button>
         ))}
       </Box>

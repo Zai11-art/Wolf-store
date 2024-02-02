@@ -12,7 +12,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import { useRouter } from "next/navigation";
 import productPreviewModal from "@/hooks/product-preview-modal";
-import { Product } from "@/types";
+import { Image, Product } from "@/types";
 import cartState from "@/hooks/cart-state";
 import { useMediaQuery } from "@mui/material";
 import { toast } from "react-toastify";
@@ -21,7 +21,11 @@ interface ProductCardProps {
   data: Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  data,
+}: {
+  data: Product;
+}) => {
   const theme = useTheme();
   const router = useRouter();
   const previewModal = productPreviewModal();
@@ -29,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
   const onOpen = productPreviewModal((state) => state.onOpen);
   const onClose = productPreviewModal((state) => state.onClose);
-  const sm = useMediaQuery("(min-width:1000px)");
+  const md = useMediaQuery("(min-width:768px)");
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -51,17 +55,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
-    if (!cart.items.find((item) => item.id === data.id)) {
-      toast.success("Added product to cart.");
-    }
-
     cart.addProduct(data);
   };
 
   return (
     <Card
       sx={{
-        width: 300,
+        width: md ? 350 : "100%",
         height: "100%",
         fontFamily: "inherit",
         borderRadius: "15px",
@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
     >
       <CardMedia
         sx={{ height: 250, cursor: "pointer" }}
-        image={data.images}
+        image={data.images[0].url}
         onClick={handleViewProduct}
       />
       <CardContent
@@ -91,10 +91,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           {data.name}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          {data.category}
+          {data.category.name}
         </Typography>
         <Typography variant="h6" component="div" color="text.primary">
-          {data.price}
+          $ {`${parseInt(data.price).toFixed(2).toString()}`}
         </Typography>
       </CardContent>
       <CardActions

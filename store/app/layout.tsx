@@ -21,6 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const categories = await getCategories();
+  console.log("categories here");
   console.log(categories);
 
   return (
@@ -29,7 +30,7 @@ export default async function RootLayout({
         <ProductDialog />
         <ToastProvider />
         <body className={inter.className}>
-          <ResponsiveAppBar data={categories} />
+          <ResponsiveAppBar categories={categories} />
           {children}
         </body>
       </ThemeContainerProvider>

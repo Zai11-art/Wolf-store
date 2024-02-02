@@ -5,7 +5,6 @@ import { CldUploadWidget } from "next-cloudinary";
 import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Image from "next/image";
 import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
 import SwipeableTextMobileStepper from "./image-carousel";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,12 +35,12 @@ const ImageUpload = ({
   ) => void;
 }) => {
   const [isMounted, setisMounted] = useState(false);
-  const [imagesD, setImage] = useState<Image[]>([]);
+  const [imagesD, setImage] = useState<string | null>(null);
   const md = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const lightmode = theme.palette.mode === "dark";
 
-  console.log(imagesD);
+  // console.log(imagesD);
 
   useEffect(() => {
     if (!isMounted) {
@@ -73,20 +72,30 @@ const ImageUpload = ({
     >
       <Box
         sx={{
-          height: "500px",
+          display: "flex",
           width: md ? "100%" : "100%",
-          marginBottom: "20px",
         }}
       >
-        {imagesD.length > 0 ? (
-          <>
-            <SwipeableTextMobileStepper image={imagesD} />
-          </>
+        {imagesD ? (
+          <Box
+            sx={{
+              backgroundColor: "black",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={imagesD}
+              style={{ height: "auto", width: "100%" }}
+              alt="uploaded_img"
+            />
+          </Box>
         ) : (
           <Box
             sx={{
               border: lightmode ? "1px dashed white" : "1px dashed black",
-              height: "100%",
+              height: "500px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -106,22 +115,16 @@ const ImageUpload = ({
         options={{ multiple: true, maxFiles: 5 }}
         onUpload={(image) => {
           // @ts-ignore
-          setImage((prevImage) => [
-            ...prevImage,
-            { url: image?.info?.secure_url },
-          ]);
+          setImage(image?.info?.secure_url);
           // @ts-ignore
-          setFieldValue("images", [
-            ...imagesD,
-            { url: image?.info?.secure_url },
-          ]);
+          setFieldValue("imageUrl", image?.info?.secure_url);
         }}
         uploadPreset="br4qkmxz"
       >
         {({ open }) => {
           return (
             <>
-              {imagesD.length === 0 && (
+              {!imagesD && (
                 <Button
                   disabled={disabled}
                   variant="contained"
@@ -151,10 +154,10 @@ const ImageUpload = ({
         }}
       </CldUploadWidget>
 
-      {imagesD.length > 0 && (
+      {imagesD && (
         <Button
           onClick={() => {
-            setImage([]);
+            setImage("");
           }}
           sx={{
             backgroundColor: "red",

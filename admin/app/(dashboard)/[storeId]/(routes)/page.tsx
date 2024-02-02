@@ -1,117 +1,118 @@
-"use client";
+// "use client";
 
 import React from "react";
-import { Box, Card, Container, Typography, useMediaQuery } from "@mui/material";
-import OutlinedCard from "@/components/card";
-import BasicBreadcrumbs from "@/components/breadcrumbs";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CheckIcon from "@mui/icons-material/Check";
-import SimpleCharts from "@/components/bar-chart";
-import PieActiveArc from "@/components/pie-chart";
 
-const DashBoardPage = () => {
-  const sm = useMediaQuery("(min-width:1000px)");
+import prismadb from "@/lib/prismadb";
+import DashboardClient from "@/components/dashboard-client";
 
-  const cardProps = [
-    {
-      label: "Total Sales",
-      description: "Total sales by the end of the month throughout.",
-      numerics: "$200",
-      Icon: <AttachMoneyIcon />,
+export interface GraphData {
+  name: string;
+  total: number;
+}
+
+const DashBoardPage = async ({ params }: { params: { storeId: string } }) => {
+  // SUCCESSFUL ORDERS
+  const orders = await prismadb.order.count({
+    where: { storeId: params.storeId, isPaid: true },
+  });
+
+  const unPaidOrders = await prismadb.order.count({
+    where: { storeId: params.storeId, isPaid: false },
+  });
+
+  // TOTAL SALES
+  const ordersPaid = await prismadb.order.findMany({
+    where: {
+      storeId: params.storeId,
+      isPaid: true,
     },
-    {
-      label: "Orders",
-      description: "Orders that are accomplished",
-      numerics: "25",
-      Icon: <ShoppingCartIcon />,
+    include: {
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
     },
-    {
-      label: "Stock Available",
-      description: "All the stocks currently available at this period of time.",
-      numerics: "23",
-      Icon: <CheckIcon />,
+  });
+
+  const calculatedTotal = ordersPaid.reduce((order, acc) => {
+    const total = acc.orderItems.reduce((order, acc) => {
+      return order + acc.product.price.toNumber();
+    }, 0);
+    return order + total;
+  }, 0);
+
+  // STOCK COUNT
+  const stocks = await prismadb.product.count({
+    where: {
+      storeId: params.storeId,
+      isArchived: false,
     },
+  });
+
+  // GRAPH DATA
+  const paidOrders = await prismadb.order.findMany({
+    where: {
+      storeId: params.storeId,
+      isPaid: true,
+    },
+    include: {
+      orderItems: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+
+  const monthlyRevenue: { [key: number]: number } = {};
+
+  // Grouping the orders by month and summing the revenue
+  for (const order of paidOrders) {
+    const month = order.createdAt.getMonth(); // 0 for Jan, 1 for Feb, ...
+    let revenueForOrder = 0;
+
+    for (const item of order.orderItems) {
+      revenueForOrder += item.product.price.toNumber();
+    }
+
+    // Adding the revenue for this order to the respective month
+    monthlyRevenue[month] = (monthlyRevenue[month] || 0) + revenueForOrder;
+  }
+
+  // Converting the grouped data into the format expected by the graph
+  const graphData: GraphData[] = [
+    { name: "Jan", total: 0 },
+    { name: "Feb", total: 0 },
+    { name: "Mar", total: 0 },
+    { name: "Apr", total: 0 },
+    { name: "May", total: 0 },
+    { name: "Jun", total: 0 },
+    { name: "Jul", total: 0 },
+    { name: "Aug", total: 0 },
+    { name: "Sep", total: 0 },
+    { name: "Oct", total: 0 },
+    { name: "Nov", total: 0 },
+    { name: "Dec", total: 0 },
   ];
 
-  return (
-    <Container
-      maxWidth={false}
-      sx={{
-        gap: 2,
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "25px",
-      }}
-    >
-      <Box>
-        <BasicBreadcrumbs />
-      </Box>
+  // Filling in the revenue data
+  for (const month in monthlyRevenue) {
+    graphData[parseInt(month)].total = monthlyRevenue[parseInt(month)];
+  }
 
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          gap: 2,
-          flexDirection: sm ? "row" : "column",
-        }}
-      >
-        <Card
-          variant="outlined"
-          sx={{
-            width: sm ? "70%" : "100%",
-            height: "500px",
-            borderRadius: 3,
-            boxShadow: 4,
-            "&: hover": {
-              transform: "scale(1.005)",
-              transition: "all ease-in-out  0.15s ",
-            },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <SimpleCharts height={sm ? 600 : 500} width={sm ? 1800 : 1000} />
-        </Card>
-        <Card
-          variant="outlined"
-          sx={{
-            width: sm ? "30%" : "100%",
-            height: "500px",
-            borderRadius: 3,
-            boxShadow: 4,
-            "&: hover": {
-              transform: "scale(1.005)",
-              transition: "all ease-in-out  0.15s ",
-            },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <PieActiveArc height={sm ? 600 : 500} width={sm ? 800 : 500} />
-        </Card>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          marginTop: "10px",
-          flexDirection: sm ? "row" : "column",
-          gap: "15px",
-        }}
-      >
-        {cardProps.map((card) => (
-          <OutlinedCard
-            label={card?.label}
-            description={card?.description}
-            numerics={card?.numerics}
-            icon={card?.Icon}
-          />
-        ))}
-      </Box>
-    </Container>
+  // PIE DATA
+  const pieData = { paidOrders: orders, unPaidOrders: unPaidOrders };
+  console.log(pieData)
+
+  return (
+    <DashboardClient
+      totalSales={`${calculatedTotal}`}
+      orders={`${orders}`}
+      stocks={`${stocks}`}
+      barData={graphData}
+      pieData={pieData}
+    />
   );
 };
 

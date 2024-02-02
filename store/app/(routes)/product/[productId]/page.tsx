@@ -12,20 +12,20 @@ interface ProductPageProps {
   };
 }
 
-const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
-  // const product = await getProduct(params.productId);
-  // const suggestedProducts = await getProducts({
-  //   categoryId: product?.category?.id,
-  // });
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const product = await getProduct(params.productId);
+  const suggestedProducts = await getProducts({
+    categoryId: product?.category?.id,
+  });
 
-  // if (!product) {
-  //   return null;
-  // }
+  if (!product) {
+    return null;
+  }
 
   return (
     <Container>
-      <ProductViewer />
-      <Catalogue title="Similar Products" />
+      <ProductViewer product={product} />
+      <Catalogue products={suggestedProducts} title="Similar Products" />
     </Container>
   );
 };

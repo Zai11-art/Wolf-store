@@ -19,7 +19,7 @@ import {
 
 // React hook form
 import axios from "axios";
-import ImageUpload from "@/components/image-upload";
+import ImageUpload from "@/components/image-upload-multiple";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -50,6 +50,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   data,
   placards,
 }: CategoryFormProps) => {
+  console.log(data);
   console.log(placards);
 
   const initialValues = {
@@ -182,7 +183,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                 width: "150px",
               }}
             >
-              Add new
+              Delete
             </Button>
           )}
         </Box>
@@ -258,24 +259,25 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                     </Typography>
                     <FormControl>
                       <InputLabel id="demo-simple-select-disabled-label">
-                        placard
+                        Placard Id
                       </InputLabel>
                       <Select
                         label="Placard id"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.placardId}
+                        value={values.placardId.toString()}
                         error={
                           Boolean(touched.placardId) &&
                           Boolean(errors.placardId)
                         }
-                        // helperText={touched.placardId && errors.placardId}
                         variant="outlined"
                         name="placardId"
                         required
+                        displayEmpty
+                        // renderValue={() => void}
                       >
                         {placards.map((plc) => (
-                          <MenuItem value={plc.label}>{plc.label}</MenuItem>
+                          <MenuItem value={plc.id}>{plc.label}</MenuItem>
                         ))}
                       </Select>
                     </FormControl>
@@ -298,7 +300,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                     }}
                     type="submit"
                   >
-                    Add Category
+                    {data ? "UPDATE" : "ADD NEW"}
                   </Button>
                 </Box>
               </form>

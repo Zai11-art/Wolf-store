@@ -40,40 +40,22 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import cartState from "@/hooks/cart-state";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { Category } from "@/types";
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ categories }: { categories: Category[] }) {
   const [isMounted, setisMounted] = useState(false);
   const colorMode = React.useContext(ColorModeContext);
   const md = useMediaQuery("(min-width:500px)");
   const theme = useTheme();
-  const productCount = cartState();
   const router = useRouter();
-
   const pathName = usePathname();
+  const productCount = cartState();
+  const navigate = useRouter();
 
-  // FOR DUMMY DATA
-  const dummyData = [
-    {
-      label: "Products",
-      Icon: <DashboardIcon />,
-      // href: `/category/${}`,
-      // active: pathName === `/${params.storeId}`,
-      id: "products",
-    },
-    {
-      label: "Placards",
-      Icon: <WallpaperIcon />,
-      // href: `/${params.storeId}/placards`,
-      // active: pathName === `/${params.storeId}/placards`,
-      id: "camera2",
-    },
-  ];
-
-  const data = dummyData.map((data) => ({
+  const data = categories.map((data) => ({
     href: `/category/${data.id}`,
-    label: `${data.label}`,
+    label: `${data.name}`,
     active: pathName === `/category/${data.id}`,
-    Icon: data.Icon,
   }));
 
   const appBarColor = theme.palette.mode === "dark" ? "#000000" : "#FFFFFF";
@@ -120,7 +102,6 @@ function ResponsiveAppBar() {
           >
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon>{page.Icon}</ListItemIcon>
                 <ListItemText
                   sx={{ textDecoration: "none", color: "white" }}
                   primary={page.label}
@@ -157,6 +138,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           <BoltIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
+            onClick={() => navigate.push("/")}
             variant="h6"
             noWrap
             component="a"

@@ -16,6 +16,7 @@ const cartState = create(
       items: [],
       addProduct: (data: Product) => {
         const currentItems = get().items;
+        console.log(currentItems);
         const existingItem = currentItems.find(
           (product) => product.id === data.id
         );

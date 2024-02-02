@@ -206,6 +206,7 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
                     flexDirection: md ? "row" : "column",
                   }}
                 >
+                  {/* IMAGE */}
                   <Box
                     sx={{
                       marginBottom: "30px",
@@ -230,6 +231,7 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
                     </Box>
                   </Box>
 
+                  {/* LABEL */}
                   <Box
                     sx={{
                       display: "flex",

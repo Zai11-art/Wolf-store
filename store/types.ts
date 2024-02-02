@@ -16,13 +16,13 @@ export interface Image {
 
 export interface Color {
   id: string;
-  label: string;
+  name: string;
   value: string;
 }
 
 export interface Size {
   id: string;
-  label: string;
+  name: string;
   value: string;
 }
 

@@ -9,8 +9,11 @@ import {
 import Image from "next/image";
 import cartState from "@/hooks/cart-state";
 import CloseIcon from "@mui/icons-material/Close";
+import { Product } from "@/types";
 
-const CartInfo = ({ data }) => {
+const CartInfo = ({ data }: { data: Product }) => {
+  console.log(data);
+
   const cart = cartState();
   const theme = useTheme();
   const md = useMediaQuery("(min-width:500px)");
@@ -47,7 +50,7 @@ const CartInfo = ({ data }) => {
             objectFit: "cover",
             objectPosition: "center",
           }}
-          src={data.images}
+          src={data.images[0].url}
         />
         <Box
           sx={{
@@ -96,25 +99,25 @@ const CartInfo = ({ data }) => {
             </Button>
           </Box>
           <Typography
-            variant={md ? "h8" : "h8"}
+            variant={"subtitle1"}
             color="text.secondary"
             sx={{ fontFamily: "inherit" }}
           >
-            Price: {data.price}
+            Price: {`${parseInt(data.price).toFixed(2).toString()}`}
           </Typography>
           <Typography
-            variant={md ? "h8" : "h8"}
+            variant={"subtitle1"}
             color="text.secondary"
             sx={{ fontFamily: "inherit" }}
           >
-            Category: {data.category}
+            Category: {data.category.name}
           </Typography>
           <Typography
-            variant={md ? "h8" : "h8"}
+            variant={"subtitle1"}
             color="text.secondary"
             sx={{ fontFamily: "inherit" }}
           >
-            Color: {data.color}
+            Color: {data.color.name}
           </Typography>
         </Box>
       </Box>

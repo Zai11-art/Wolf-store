@@ -4,8 +4,9 @@ import Slider from "react-slick";
 
 import Carousel from "react-material-ui-carousel";
 import Box from "@mui/material/Box";
-import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
+import { Image as ImageType } from "@/types";
+import Image from "next/image";
 
 const dummyData = [
   {
@@ -16,7 +17,7 @@ const dummyData = [
   },
 ];
 
-const ImageSLider = () => {
+const ImageSLider = ({ images }: { images: ImageType[] }) => {
   const md = useMediaQuery("(min-width:800px)");
   const lg = useMediaQuery("(min-width:1000px)");
 
@@ -39,7 +40,7 @@ const ImageSLider = () => {
           height: "100%",
         }}
       >
-        {dummyData.map((image, i) => (
+        {images.map((image, i) => (
           <Image
             style={{
               display: "flex",

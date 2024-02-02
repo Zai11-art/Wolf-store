@@ -1,3 +1,5 @@
+// "use client";
+
 import React from "react";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -17,7 +19,7 @@ const CartSummary = () => {
   const searchParams = useSearchParams();
   const products = cartState((state) => state.items);
   const removeAllProducts = cartState((state) => state.removeAll);
-
+  console.log(products);
   const theme = useTheme();
   const md = useMediaQuery("(min-width:1000px)");
 
@@ -27,7 +29,7 @@ const CartSummary = () => {
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
   useEffect(() => {
-    if (searchParams.get("sucess")) {
+    if (searchParams.get("success")) {
       removeAllProducts();
       //  PUT TOAST HERE
       toast.success("Paid Successfully.");
@@ -44,11 +46,19 @@ const CartSummary = () => {
   }, 0);
 
   const payOrder = async () => {
-    const response = await axios.post(`/${process.env.API_URL}/checkout`, {
-      productIds: products.map((product) => product.id),
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
+      {
+        productIds: products.map((product) => product.id),
+      }
+    );
 
-    window.location = response.data.url;
+    if (response.statusText) {
+      window.location = response.data.url;
+      removeAllProducts();
+    }
+    // console.log("CHECK HERE");
+    // console.log(response);
   };
 
   return (

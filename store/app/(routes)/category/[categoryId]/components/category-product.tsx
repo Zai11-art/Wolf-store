@@ -1,61 +1,23 @@
 "use client";
 
 import ProductCard from "@/components/product-card";
+import { Color, Product, Size } from "@/types";
 import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import FilterCol from "./filter";
 
-const CategoryProduct = ({ sizes, colors, products }) => {
-  const md = useMediaQuery("(min-width:1200px)");
+const CategoryProduct = ({
+  sizes,
+  colors,
+  products,
+}: {
+  sizes: Size[];
+  colors: Color[];
+  products: Product[];
+}) => {
+  const md = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   console.log(products);
-
-  const dummydataProduct = [
-    {
-      id: "camera",
-      category: "tech",
-      name: "Nikon Z 1.4g",
-      price: "$100.00",
-      isFeatured: "hehe",
-      size: "Large",
-      color: "Black",
-      images:
-        "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: "camera2",
-      category: "tech",
-      name: "Nikon Z 1.4g",
-      price: "$100.00",
-      isFeatured: "hehe",
-      size: "Large",
-      color: "Black",
-      images:
-        "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: "camera2",
-      category: "tech",
-      name: "Nikon Z 1.4g",
-      price: "$100.00",
-      isFeatured: "hehe",
-      size: "Large",
-      color: "Black",
-      images:
-        "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: "camera2",
-      category: "tech",
-      name: "Nikon Z 1.4g",
-      price: "$100.00",
-      isFeatured: "hehe",
-      size: "Large",
-      color: "Black",
-      images:
-        "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ];
 
   return (
     <Box
@@ -66,7 +28,7 @@ const CategoryProduct = ({ sizes, colors, products }) => {
         marginTop: 6,
         display: "flex",
         justifyContent: "center",
-        paddingX: md ? 1 : 1,
+        flexDirection: md ? "row" : "column",
         // marginLeft: "100px",
       }}
     >
@@ -77,27 +39,31 @@ const CategoryProduct = ({ sizes, colors, products }) => {
         <FilterCol key="sizeId" name="Sizes" data={sizes} />
         <FilterCol key="colorId" name="Colors" data={colors} />
       </Box>
-      <div
+      <Box
         className={
           theme.palette.mode === "dark"
             ? "glassmorphism-dark"
             : "glassmorphism-light"
         }
-        style={{ width: "100%" }}
+        sx={{ width: "100%", display: "flex" }}
       >
         <Grid
           container
-          justifyContent="space-around"
           alignItems="center"
-          sx={{ paddingX: 1 }}
+          sx={{
+            justifyContent: md ? "" : "center",
+            width: "100%",
+            display: "flex",
+            paddingX: 2
+          }}
         >
-          {dummydataProduct.map((product) => (
-            <Grid sx={{ paddingY: 3 }}>
+          {products.map((product) => (
+            <Grid sx={{ paddingY: 3, width: "100%", display: "flex" }}>
               <ProductCard data={product} />
             </Grid>
           ))}
         </Grid>
-      </div>
+      </Box>
     </Box>
   );
 };

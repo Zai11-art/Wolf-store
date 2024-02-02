@@ -1,34 +1,34 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useTheme } from "@mui/material";
+import { GraphData } from "@/app/(dashboard)/[storeId]/(routes)/page";
 
 interface BarChartProps {
   height: number;
   width: number;
+  barData: GraphData[];
 }
 
-export default function SimpleCharts({ height, width }: BarChartProps) {
-  const theme = useTheme();
+export default function SimpleCharts({
+  barData,
+  height,
+  width,
+}: BarChartProps) {
+  const xData = barData.map((x) => x.name);
+  const yData = barData.map((y) => y.total);
+
   return (
     <BarChart
       xAxis={[
         {
           id: "barCategories",
-          data: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ],
+          data: xData,
           scaleType: "band",
         },
       ]}
       series={[
         {
-          data: [2, 5, 3, 7, 3, 3, 7],
+          data: yData,
         },
       ]}
       width={width}
