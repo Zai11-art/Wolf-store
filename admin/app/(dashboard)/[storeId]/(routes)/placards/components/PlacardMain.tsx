@@ -1,34 +1,29 @@
 "use client";
 
-import ApiList from "@/components/api-list";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { useRoot } from "@/hooks/use-root";
 import { useParams, useRouter } from "next/navigation";
-import BasicPopover from "@/components/popover";
-import { PlacardProps } from "../page";
-import DataTable from "@/components/DataTable";
-import EditDialog from "@/components/dialog-edit";
-import axios from "axios";
-import { toast } from "react-toastify";
-import Example from "../[placardId]/components/table";
+import { Box, Button, Container, Divider, useTheme } from "@mui/material";
 
-export default function PlacardPage({ data }: { data: PlacardProps[] }) {
+import ApiList from "@/components/api-list";
+import DataTable from "@/components/DataTable";
+
+export interface PlacardProps {
+  id: string;
+  label: string;
+  createdAt: string;
+  imageUrl: string;
+}
+
+interface PlacardMainProps {
+  data: PlacardProps[];
+}
+
+const PlacardPage: React.FC<PlacardMainProps> = ({
+  data,
+}: PlacardMainProps) => {
   const router = useRouter();
   const theme = useTheme();
   const params = useParams();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
-  const originUrl = `${useRoot()}/api/${useParams().storeId}`;
-  console.log(data);
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -43,7 +38,6 @@ export default function PlacardPage({ data }: { data: PlacardProps[] }) {
       >
         <Box
           sx={{
-            // marginBottom: "20px",
             display: "flex",
             width: "100%",
             justifyContent: "space-between",
@@ -74,7 +68,6 @@ export default function PlacardPage({ data }: { data: PlacardProps[] }) {
           </Box>
 
           <Button
-            disabled={loading}
             onClick={() => router.push(`/${params.storeId}/placards/new`)}
             variant="contained"
             sx={{
@@ -104,7 +97,7 @@ export default function PlacardPage({ data }: { data: PlacardProps[] }) {
         />
 
         {/* TABLE HERE */}
-        <DataTable dataType="placards" data={data} />
+        <DataTable dataType="placards" data={data ? data : []} />
 
         <Box
           sx={{
@@ -141,4 +134,6 @@ export default function PlacardPage({ data }: { data: PlacardProps[] }) {
       </Container>
     </>
   );
-}
+};
+
+export default PlacardPage;

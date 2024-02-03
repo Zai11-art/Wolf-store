@@ -1,32 +1,30 @@
 "use client";
 
+import axios from "axios";
 import * as React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useStoreDialog } from "@/hooks/use-store-dialog";
-import { IconButton, useTheme, Box } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import { IconButton, useTheme, Box } from "@mui/material";
+import { useStoreDialog } from "@/hooks/use-store-dialog";
+import DialogContentText from "@mui/material/DialogContentText";
 
 // React hook form
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useDialogEdit } from "@/hooks/use-edit-dialog";
 
 interface FormValue {
   name: string;
 }
 
-
 export default function EditDialog() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const storeDialog = useDialogEdit();
+  const storeDialog = useStoreDialog();
   const theme = useTheme();
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";

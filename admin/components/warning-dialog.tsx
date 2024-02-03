@@ -1,14 +1,15 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { IconButton, Box, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useWarningDialog } from "@/hooks/use-edit-dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useParams, useRouter } from "next/navigation";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import { IconButton, Box, useTheme } from "@mui/material";
+import DialogContentText from "@mui/material/DialogContentText";
+
+import { useWarningDialog } from "@/hooks/use-edit-dialog";
 
 interface WarningDialog {
   loading: boolean;
@@ -17,10 +18,9 @@ interface WarningDialog {
 const WarningDialog: React.FC<WarningDialog> = ({ loading }) => {
   const [isMounted, setIsMounted] = React.useState(false);
   const theme = useTheme();
-  const dialog = useWarningDialog();
-  const { storeId } = useParams();
-  const dialogData = useWarningDialog((state) => state.data);
   const router = useRouter();
+  const { storeId } = useParams();
+  const dialog = useWarningDialog();
 
   React.useEffect(() => {
     if (!isMounted) {

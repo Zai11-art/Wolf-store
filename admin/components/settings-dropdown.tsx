@@ -1,19 +1,18 @@
+import axios from "axios";
 import * as React from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
+import { toast } from "react-toastify";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
+import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-
-import SettingsIcon from "@mui/icons-material/Settings";
-import { useWarningDialog } from "@/hooks/use-edit-dialog";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { useParams, useRouter } from "next/navigation";
-import axios from "axios";
-import { toast } from "react-toastify";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+
+import { useWarningDialog } from "@/hooks/use-edit-dialog";
 
 const options = ["Delete", "Edit"];
 
@@ -21,7 +20,7 @@ export default function SplitButton({
   dataType,
   id,
 }: {
-  id: string;
+  id: string | undefined;
   dataType: string;
 }) {
   const [open, setOpen] = React.useState(false);
@@ -34,7 +33,6 @@ export default function SplitButton({
   const useWarningModal = useWarningDialog();
 
   const onDelete = async (storeId: string, placardId: string) => {
-    console.log(storeId, placardId);
     try {
       setLoading(true);
       await axios.delete(`/api/${storeId}/${dataType}/${placardId}`);
@@ -58,7 +56,7 @@ export default function SplitButton({
     // @ts-ignore
     if (event.target?.outerText === "Delete")
       useWarningModal.onOpen({
-        id: id,
+        data: `${id ? id : ""}`,
         method: onDelete,
       });
 

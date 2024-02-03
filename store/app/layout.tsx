@@ -1,12 +1,12 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Tilt_Neon } from "next/font/google";
-import "./globals.css";
+
 import ResponsiveAppBar from "@/components/navbar";
-import ThemeContainerProvider from "@/providers/theme-provider";
+import { getCategories } from "@/fetchers/fetch-data";
 import ProductDialog from "@/components/product-dialog";
 import { ToastProvider } from "@/providers/toast-provider";
-import { getCategories } from "@/fetchers/fetch-data";
-import { usePathname } from "next/navigation";
+import ThemeContainerProvider from "@/providers/theme-provider";
 
 const inter = Tilt_Neon({ subsets: ["latin"] });
 
@@ -21,8 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const categories = await getCategories();
-  console.log("categories here");
-  console.log(categories);
 
   return (
     <html lang="en">
@@ -37,3 +35,5 @@ export default async function RootLayout({
     </html>
   );
 }
+
+

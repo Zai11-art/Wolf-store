@@ -1,8 +1,5 @@
-// "use client";
+"use client";
 
-import React from "react";
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import {
   Box,
   Typography,
@@ -10,10 +7,13 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import cartState from "@/hooks/cart-state";
 import axios from "axios";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { toast } from "react-toastify";
+import React, { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
+import cartState from "@/hooks/cart-state";
 
 const CartSummary = () => {
   const searchParams = useSearchParams();

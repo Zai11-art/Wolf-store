@@ -1,14 +1,15 @@
 "use client";
 
 import React from "react";
-import { Box, Card, Container, Typography, useMediaQuery } from "@mui/material";
-import OutlinedCard from "@/components/card";
-import BasicBreadcrumbs from "@/components/breadcrumbs";
+import CheckIcon from "@mui/icons-material/Check";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CheckIcon from "@mui/icons-material/Check";
+import { Box, Card, Container, useMediaQuery } from "@mui/material";
+
+import OutlinedCard from "@/components/card";
 import SimpleCharts from "@/components/bar-chart";
 import PieActiveArc from "@/components/pie-chart";
+import BasicBreadcrumbs from "@/components/breadcrumbs";
 import { GraphData } from "@/app/(dashboard)/[storeId]/(routes)/page";
 
 const DashboardClient = ({
@@ -36,13 +37,13 @@ const DashboardClient = ({
     {
       label: "Orders",
       description: "Orders that are accomplished",
-      numerics: `$${orders}`,
+      numerics: `${orders}`,
       Icon: <ShoppingCartIcon />,
     },
     {
       label: "Stock Available",
       description: "All the stocks currently available at this period of time.",
-      numerics: `$${stocks}`,
+      numerics: `${stocks}`,
       Icon: <CheckIcon />,
     },
   ];

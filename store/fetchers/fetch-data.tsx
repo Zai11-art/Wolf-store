@@ -67,6 +67,8 @@ export const getProducts2 = async (): Promise<Product[]> => {
 
 // GET ALL PRODUCTS
 export const getProducts = async (obj: ParamQueryProps): Promise<Product[]> => {
+  console.log("THE OBJECT HERE");
+  console.log(obj);
   const urlQuery = qs.stringifyUrl({
     url: `${process.env.NEXT_PUBLIC_API_URL}/products`,
     query: {

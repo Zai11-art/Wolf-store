@@ -1,19 +1,19 @@
 "use client";
 
+import axios from "axios";
 import * as React from "react";
-import Popover from "@mui/material/Popover";
+import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import { useTheme, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import { useTheme, Box } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import WarningDialog from "./warning-dialog";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import axios from "axios";
 
-export default function BasicPopover({ data }) {
+import WarningDialog from "./warning-dialog";
+
+export default function BasicPopover({ data }: { data: { id: string } }) {
   const theme = useTheme();
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -35,7 +35,7 @@ export default function BasicPopover({ data }) {
   const id = openAnc ? "simple-popover" : undefined;
 
   // ADDITIONALS
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [loading, setIsloading] = React.useState(false);
   const router = useRouter();
   const params = useParams();
@@ -61,12 +61,7 @@ export default function BasicPopover({ data }) {
 
   return (
     <>
-      <WarningDialog
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      />
+      <WarningDialog loading={loading} />
 
       <div>
         <Button

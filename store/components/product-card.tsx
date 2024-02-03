@@ -1,21 +1,21 @@
 "use client";
 
 import * as React from "react";
-import { useTheme } from "@mui/material";
 import Card from "@mui/material/Card";
+import { useTheme } from "@mui/material";
+import Button from "@mui/material/Button";
+import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
-import { useRouter } from "next/navigation";
-import productPreviewModal from "@/hooks/product-preview-modal";
-import { Image, Product } from "@/types";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+
+import { Product } from "@/types";
 import cartState from "@/hooks/cart-state";
-import { useMediaQuery } from "@mui/material";
-import { toast } from "react-toastify";
+import productPreviewModal from "@/hooks/product-preview-modal";
 
 interface ProductCardProps {
   data: Product;
@@ -110,7 +110,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           onClick={previewProduct}
           variant="outlined"
           sx={{
-            // backgroundColor: buttonColorMode,
             color: buttonColorMode,
             fontWeight: "bold",
             ":hover": {

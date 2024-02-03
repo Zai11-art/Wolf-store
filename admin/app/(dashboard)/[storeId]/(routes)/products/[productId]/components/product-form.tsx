@@ -18,21 +18,17 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-
-// React hook form
 import axios from "axios";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Category, Color, Image, Product, Size } from "@prisma/client";
-import { toast } from "react-toastify";
-
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import DeleteIcon from "@mui/icons-material/Delete";
-import WarningDialog from "@/components/warning-dialog";
 import { Formik } from "formik";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams, useRouter } from "next/navigation";
+
+import WarningDialog from "@/components/warning-dialog";
 import ImageUploadMultiple from "@/components/image-upload-multiple";
+import { Category, Color, Image, Product, Size } from "@prisma/client";
 
 interface ProductFormProps {
   data:
@@ -73,12 +69,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const md = useMediaQuery("(min-width:1200px)");
-
-  // SELECT
-  const [select, setSelect] = useState("");
-  const handleChange = (e: SelectChangeEvent) => {
-    setSelect(e.target.value);
-  };
 
   const theme = useTheme();
   const params = useParams();

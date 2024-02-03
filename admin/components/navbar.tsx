@@ -1,61 +1,52 @@
 "use client";
 
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
+import { useContext } from "react";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import { UserButton } from "@clerk/nextjs";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import { useMediaQuery } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-// import AdbIcon from "@mui/icons-material/Adb";
-import { UserButton } from "@clerk/nextjs";
-import BoltIcon from "@mui/icons-material/Bolt";
-
-// FOR DARK MODE
-import { createContext, useContext } from "react";
-import { ColorModeContext } from "@/providers/theme-provider";
 import { useTheme } from "@mui/material/styles";
+import BoltIcon from "@mui/icons-material/Bolt";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import { useParams, usePathname } from "next/navigation";
+import { ColorModeContext } from "@/providers/theme-provider";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Stack from "@mui/material/Stack";
-import { useMediaQuery } from "@mui/material";
 
 // FOR DRAWER/ SIDE BAR
 import { useState } from "react";
-import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
+import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import CategoryIcon from "@mui/icons-material/Category";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ColorLensIcon from '@mui/icons-material/ColorLens';
-import PhotoSizeSelectSmallIcon from '@mui/icons-material/PhotoSizeSelectSmall';
+import ListItemButton from "@mui/material/ListItemButton";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import WallpaperIcon from "@mui/icons-material/Wallpaper";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import PhotoSizeSelectSmallIcon from "@mui/icons-material/PhotoSizeSelectSmall";
 
 // DROP DOWN
 import DropDown from "./dropdown";
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { Store } from "@prisma/client";
 
 interface StoreProps {
-  stores: {
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    id: string;
-  }[];
+  stores: Store[];
 }
 
-function ResponsiveAppBar({ stores }: StoreProps) {
-  console.log(stores);
+const ResponsiveAppBar: React.FC<StoreProps> = ({ stores }: StoreProps) => {
   const params = useParams();
   const pathName = usePathname();
 
@@ -289,5 +280,5 @@ function ResponsiveAppBar({ stores }: StoreProps) {
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;

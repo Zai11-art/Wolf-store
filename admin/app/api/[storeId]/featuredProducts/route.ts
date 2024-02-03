@@ -1,12 +1,12 @@
-import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+
+import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-
     const featuredProducts = await prismadb.product.findMany({
       where: {
         storeId: params.storeId,

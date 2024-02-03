@@ -1,16 +1,13 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import MobileStepper from "@mui/material/MobileStepper";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
+import SwipeableViews from "react-swipeable-views";
+import { autoPlay } from "react-swipeable-views-utils";
+import MobileStepper from "@mui/material/MobileStepper";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-// @ts-ignore
-import SwipeableViews from "react-swipeable-views";
-// @ts-ignore
-import { autoPlay } from "react-swipeable-views-utils";
+
 import { Image } from "@prisma/client";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);

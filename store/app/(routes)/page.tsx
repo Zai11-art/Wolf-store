@@ -1,23 +1,15 @@
 import React from "react";
 import Container from "@mui/material/Container";
+
 import Placard from "@/components/placard";
-import Image from "next/image";
 import Catalogue from "@/components/catalouge";
-import {
-  getAllProducts,
-  getFeaturedProducts,
-  getPlacard,
-  getPlacards,
-  getProducts,
-  getProducts2,
-  getSizes,
-} from "@/fetchers/fetch-data";
-import { Category } from "@/types";
+import { getFeaturedProducts, getPlacard } from "@/fetchers/fetch-data";
 
 const page = async () => {
   const products = await getFeaturedProducts();
-  const placard = await getPlacard("a1edf94f-3401-4ac4-8415-3e6bd8bd1676");
+  const placard = await getPlacard("1e4962f8-779e-44d6-a1fe-96b0d30098aa");
 
+  // const placard = placardres ? placardres.imageUrl : "";
   return (
     <Container
       maxWidth={false}

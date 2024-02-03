@@ -1,5 +1,6 @@
 import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { Typography } from "@mui/material";
 
 interface PieChartProps {
   height: number;
@@ -18,7 +19,11 @@ export default function PieActiveArc({
   width,
   pieData,
 }: PieChartProps) {
-  console.log(pieData);
+  const isData = pieData.paidOrders > 0 && pieData.unPaidOrders > 0;
+
+  if (!isData) {
+    return <Typography variant="subtitle1">No Data Available yet.</Typography>;
+  }
 
   return (
     <PieChart

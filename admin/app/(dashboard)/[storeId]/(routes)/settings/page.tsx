@@ -1,8 +1,10 @@
-import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs";
 import { Container } from "@mui/material";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
+
+import prismadb from "@/lib/prismadb";
 import SettingsForm from "./components/settings-form";
+
 
 export default async function SettingsPage({
   params,
@@ -24,8 +26,6 @@ export default async function SettingsPage({
   if (!store) {
     redirect(`/`);
   }
-
-  //   if (!placard) redirect(`/${params.storeId}`);
 
   return (
     <Container

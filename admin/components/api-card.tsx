@@ -1,19 +1,17 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-
-import TextField from "@mui/material/TextField";
-import { IconButton, Button, useTheme } from "@mui/material";
-import Snackbar from "@mui/material/Snackbar";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Chip from "@mui/material/Chip";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import PublicIcon from "@mui/icons-material/Public";
+import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+import PublicIcon from "@mui/icons-material/Public";
+import CardContent from "@mui/material/CardContent";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { IconButton, Button, useTheme } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 interface CardProps {
   label: string;

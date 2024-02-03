@@ -1,33 +1,25 @@
 "use client";
 
-import ApiList from "@/components/api-list";
-import OutlinedCard from "@/components/card";
-import BasicPopover from "@/components/popover";
-import DataTable from "@/components/DataTable";
-import EnhancedTable from "@/components/table";
-import TableTest from "@/components/DataTable";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { SizeTypes } from "../page";
+import { Box, Button, Container, Divider, useTheme } from "@mui/material";
 
-interface SizeMainProps {
-  data: SizeTypes[];
+import ApiList from "@/components/api-list";
+import DataTable from "@/components/DataTable";
+
+export interface SizeProps {
+  id: string;
+  name: string;
+  value: string;
+  createdAt: string;
 }
 
-const SizeMain: React.FC<SizeMainProps> = ({ data }) => {
-  const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
+interface SizeMainProps {
+  data: SizeProps[];
+}
 
+const SizeMain: React.FC<SizeMainProps> = ({ data }: SizeMainProps) => {
+  const theme = useTheme();
   const router = useRouter();
   const params = useParams();
 
@@ -70,7 +62,6 @@ const SizeMain: React.FC<SizeMainProps> = ({ data }) => {
         </Box>
 
         <Button
-          disabled={loading}
           variant="contained"
           onClick={() => router.push(`/${params.storeId}/sizes/new`)}
           sx={{
@@ -92,7 +83,6 @@ const SizeMain: React.FC<SizeMainProps> = ({ data }) => {
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}
@@ -125,7 +115,6 @@ const SizeMain: React.FC<SizeMainProps> = ({ data }) => {
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}

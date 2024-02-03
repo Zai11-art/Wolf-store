@@ -1,9 +1,8 @@
 import * as React from "react";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
 import { useParams, usePathname } from "next/navigation";
-
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -18,7 +17,7 @@ export default function BasicBreadcrumbs() {
   return (
     <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ fontSize: "13px" }}>
-        <Link underline="hover" color="inherit" >
+        <Link underline="hover" color="inherit">
           Store
         </Link>
         <Link underline="hover" color="inherit" href={`/${params.storeId}`}>

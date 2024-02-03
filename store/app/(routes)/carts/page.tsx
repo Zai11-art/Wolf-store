@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, useMediaQuery } from "@mui/material";
-import CartInfo from "./components/CartInfo";
+
 import cartState from "@/hooks/cart-state";
+import CartInfo from "./components/CartInfo";
 import CartSummary from "./components/Cart-Summary";
 
 const CartPage = () => {

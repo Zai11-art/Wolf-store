@@ -1,18 +1,13 @@
-import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+
+import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string; placardId: string } }
 ) {
   try {
-    // const { userId } = auth();
-
-    // if (!userId) {
-    //   return new NextResponse("Unauthorized", { status: 401 });
-    // }
-
     if (!params.placardId) {
       return new NextResponse("Store Id is required", { status: 403 });
     }

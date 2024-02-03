@@ -19,9 +19,9 @@ export async function GET(
     const products = await prismadb.product.findMany({
       where: {
         storeId: params.storeId,
-        categoryId,
-        colorId,
-        sizeId,
+        categoryId: categoryId,
+        colorId: colorId,
+        sizeId: sizeId,
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
@@ -38,6 +38,10 @@ export async function GET(
 
     console.log("CHECK HERE");
     console.log(products);
+    console.log(categoryId);
+    console.log(colorId);
+    console.log(sizeId);
+    console.log(isFeatured);
 
     return NextResponse.json(products);
   } catch (error) {
@@ -45,56 +49,6 @@ export async function GET(
     return new NextResponse("Server Error", { status: 500 });
   }
 }
-
-// export async function GET(
-//   req: Request,
-//   { params }: { params: { storeId: string; sizeId: string } }
-// ) {
-//   try {
-//     const { searchParams } = new URL(req.url);
-//     // const categoryId = searchParams.get("categoryId") || undefined;
-//     // const colorId = searchParams.get("colorId") || undefined;
-//     // const sizeId = searchParams.get("sizeId") || undefined;
-//     const isFeatured = searchParams.get("isFeatured");
-
-//     // if (!params.storeId) {
-//     //   return new NextResponse("Store Id is required", { status: 400 });
-//     // }
-
-//     // const products = await prismadb.product.findMany({
-//     //   where: {
-//     //     storeId: params.storeId,
-//     //     categoryId,
-//     //     colorId,
-//     //     sizeId,
-//     //     isFeatured: isFeatured ? true : undefined,
-//     //     isArchived: false,
-//     //   },
-//     //   include: {
-//     //     images: true,
-//     //     category: true,
-//     //     color: true,
-//     //     size: true,
-//     //   },
-//     //   orderBy: {
-//     //     createdAt: "desc",
-//     //   },
-//     // });
-
-//     const products = await prismadb.product.findMany({
-//       where: {
-//         isFeatured: isFeatured ? true : false,
-//       },
-//     });
-
-//     console.log("CHECK HERE");
-//     console.log(products);
-//     // return NextResponse.json(products);
-//   } catch (error) {
-//     console.log("[PRODUCT_GET]", error);
-//     return new NextResponse("Server Error", { status: 500 });
-//   }
-// }
 
 export async function POST(
   req: Request,

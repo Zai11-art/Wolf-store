@@ -1,16 +1,14 @@
 "use client";
 
 import React from "react";
-import { Box, useTheme } from "@mui/material";
-import { useMediaQuery } from "@mui/material";
 import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-
+import CardContent from "@mui/material/CardContent";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import productPreviewModal from "@/hooks/product-preview-modal";
-import cartState from "@/hooks/cart-state";
+
 import { Product } from "@/types";
+import cartState from "@/hooks/cart-state";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   const theme = useTheme();

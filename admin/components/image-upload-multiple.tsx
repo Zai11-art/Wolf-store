@@ -2,25 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
+import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
-import SwipeableTextMobileStepper from "./image-carousel";
-import CloseIcon from "@mui/icons-material/Close";
-import { Image } from "@prisma/client";
 
-interface ImageUploadMultipleProps {
-  disabled?: boolean;
-  setFieldValue: ({
-    value,
-    imageUrl,
-  }: {
-    value: string;
-    imageUrl: { info: { secure_url?: string } };
-  }) => void;
-  value: string[];
-}
+import { Image } from "@prisma/client";
+import SwipeableTextMobileStepper from "./image-carousel";
+import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/components/PlacardMain";
 
 const ImageUploadMultiple = ({
   data,
@@ -35,12 +23,14 @@ const ImageUploadMultiple = ({
   ) => void;
 }) => {
   const [isMounted, setisMounted] = useState(false);
-  const [imagesD, setImage] = useState<Image[]>([]);
+  const [imagesD, setImage] = useState<Image[]>(
+    // @ts-ignore
+    data?.images.length > 0 ? data?.images : []
+  );
+
   const md = useMediaQuery("(min-width:1000px)");
   const theme = useTheme();
   const lightmode = theme.palette.mode === "dark";
-
-  // console.log(imagesD);
 
   useEffect(() => {
     if (!isMounted) {
@@ -53,8 +43,6 @@ const ImageUploadMultiple = ({
   const hoverColorMode = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
-  const buttonColorMode2 = theme.palette.mode === "dark" ? "white" : "black";
-  const buttonTextMode2 = theme.palette.mode === "dark" ? "black" : " white";
   const hoverColorMode2 = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode2 = theme.palette.mode === "dark" ? "white" : " black";
 

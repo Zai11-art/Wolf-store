@@ -1,7 +1,8 @@
-import { Box, useMediaQuery } from "@mui/material";
-import ApiCard from "@/components/api-card";
-import { useRoot } from "@/hooks/use-root";
 import { useParams } from "next/navigation";
+import { Box, useMediaQuery } from "@mui/material";
+
+import { useRoot } from "@/hooks/use-root";
+import ApiCard from "@/components/api-card";
 
 interface ApiListProps {
   sectionName: string;

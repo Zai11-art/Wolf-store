@@ -1,7 +1,7 @@
+import { Container } from "@mui/material";
+
 import prismadb from "@/lib/prismadb";
 import CategoryForm from "./components/color-form";
-import { Container } from "@mui/material";
-import { redirect } from "next/navigation";
 
 export default async function ColorsPage({
   params,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { useTheme } from "@mui/material";
 import { GraphData } from "@/app/(dashboard)/[storeId]/(routes)/page";
+import { Typography } from "@mui/material";
 
 interface BarChartProps {
   height: number;
@@ -16,6 +16,12 @@ export default function SimpleCharts({
 }: BarChartProps) {
   const xData = barData.map((x) => x.name);
   const yData = barData.map((y) => y.total);
+
+  const isData = yData.some((data: number) => data > 1);
+
+  if (!isData) {
+    return <Typography variant="subtitle1">No Data Available yet.</Typography>;
+  }
 
   return (
     <BarChart

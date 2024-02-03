@@ -12,25 +12,18 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText,
   SelectChangeEvent,
   useMediaQuery,
 } from "@mui/material";
-
-// React hook form
 import axios from "axios";
-import ImageUpload from "@/components/image-upload-multiple";
-import { toast } from "react-toastify";
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { Category, Placard } from "@prisma/client";
-import WarningDialog from "@/components/warning-dialog";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams, useRouter } from "next/navigation";
 
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Formik } from "formik";
+import WarningDialog from "@/components/warning-dialog";
 
 interface CategoryFormProps {
   data: Category | null;
@@ -61,12 +54,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const sm = useMediaQuery("(min-width:700px)");
-
-  // SELECT
-  const [select, setSelect] = useState("");
-  const handleChange = (e: SelectChangeEvent) => {
-    setSelect(e.target.value);
-  };
 
   const theme = useTheme();
   const params = useParams();
@@ -136,7 +123,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
       >
         <Box
           sx={{
-            // marginBottom: "20px",
             display: "flex",
             width: "100%",
             justifyContent: "space-between",
@@ -192,7 +178,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           sx={{
             mb: "30px",
             mt: "20px",
-            // borderBottomWidth: "1px",
             backgroundColor:
               theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
           }}
@@ -274,7 +259,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                         name="placardId"
                         required
                         displayEmpty
-                        // renderValue={() => void}
                       >
                         {placards.map((plc) => (
                           <MenuItem value={plc.id}>{plc.label}</MenuItem>

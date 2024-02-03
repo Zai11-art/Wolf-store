@@ -1,29 +1,27 @@
 "use client";
 
-import BasicPopover from "@/components/popover";
-import TableTest from "@/components/DataTable";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Container, Divider, useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+
 import { Order } from "@prisma/client";
 import DataTable from "@/components/DataTable";
 
-interface OrderProps {
-  data: Order[];
+export interface OrderProps {
+  id: string;
+  storeId: string;
+  isPaid: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  products: string;
 }
 
-const OrdersMain: React.FC<OrderProps> = ({ data }) => {
-  console.log(data);
+interface OrderMainProps {
+  data: OrderProps[];
+}
+
+const OrdersMain: React.FC<OrderMainProps> = ({ data }) => {
   const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
 
   return (
     <Container
@@ -62,14 +60,13 @@ const OrdersMain: React.FC<OrderProps> = ({ data }) => {
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}
       />
 
       {/* TABLE HERE */}
-      <DataTable dataType="orders" data={data || []} />
+      <DataTable dataType="orders" data={data ? data : []} />
 
       {/* API SECTION */}
     </Container>

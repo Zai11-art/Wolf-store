@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import prismadb from "@/lib/prismadb";
 
+import prismadb from "@/lib/prismadb";
 import ResponsiveAppBar from "@/components/navbar";
 
 export default async function DashLayout({

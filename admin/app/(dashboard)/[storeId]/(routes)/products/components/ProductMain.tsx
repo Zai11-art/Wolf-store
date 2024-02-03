@@ -1,11 +1,5 @@
 "use client";
 
-import ApiList from "@/components/api-list";
-import OutlinedCard from "@/components/card";
-import BasicPopover from "@/components/popover";
-import DataTable from "@/components/DataTable";
-import EnhancedTable from "@/components/table";
-import TableTest from "@/components/DataTable";
 import {
   Box,
   Button,
@@ -14,30 +8,40 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import Typography from "@mui/material/Typography";
 import { useParams, useRouter } from "next/navigation";
-import ApiCard from "@/components/api-card";
-import { Category, Color, Product, Size } from "@prisma/client";
-import TextPopOver from "@/components/text-popover";
 
-export default function ProductMain({
+import ApiList from "@/components/api-list";
+import DataTable from "@/components/DataTable";
+import TextPopOver from "@/components/text-popover";
+import { Category, Color, Size } from "@prisma/client";
+
+export interface ProductProps {
+  id: string;
+  name: string;
+  price: string;
+  color: string;
+  size: string;
+  category: string;
+  isFeatured: string;
+  isArchived: string;
+  createdAt: string;
+}
+
+interface PlacardMainProps {
+  data: ProductProps[];
+  categories: Category[];
+  colors: Color[];
+  sizes: Size[];
+}
+const ProductMain: React.FC<PlacardMainProps> = ({
   data,
   categories,
   colors,
   sizes,
-}: {
-  data: Product[];
-  categories: Category[];
-  colors: Color[];
-  sizes: Size[];
-}) {
+}: PlacardMainProps) => {
   const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
-
-  console.log(data);
-
   const router = useRouter();
   const params = useParams();
 
@@ -53,7 +57,6 @@ export default function ProductMain({
     >
       <Box
         sx={{
-          // marginBottom: "20px",
           display: "flex",
           width: "100%",
           justifyContent: "space-between",
@@ -144,14 +147,14 @@ export default function ProductMain({
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
+
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}
       />
 
       {/* TABLE HERE */}
-      <DataTable dataType="products" data={data} />
+      <DataTable dataType="products" data={data ? data : []} />
 
       <Box
         sx={{
@@ -177,7 +180,6 @@ export default function ProductMain({
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}
@@ -186,4 +188,6 @@ export default function ProductMain({
       <ApiList sectionName="products" sectionId="productId" />
     </Container>
   );
-}
+};
+
+export default ProductMain;

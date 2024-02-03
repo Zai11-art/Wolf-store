@@ -1,9 +1,9 @@
 import React from "react";
-import { getProduct, getProducts, getSizes } from "@/fetchers/fetch-data";
-import { Container, Box, useMediaQuery } from "@mui/material";
+import { Container } from "@mui/material";
+
 import Catalogue from "@/components/catalouge";
-import ImageSLider from "@/components/gallery";
-import ProductInfo from "@/components/product-info";
+import { getProduct, getProducts } from "@/fetchers/fetch-data";
+
 import ProductViewer from "./components/product-viewer";
 
 interface ProductPageProps {

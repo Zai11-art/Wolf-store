@@ -1,7 +1,7 @@
-import prismadb from "@/lib/prismadb";
-import { Container } from "@mui/material";
-import { Product } from "@prisma/client";
 import { format } from "date-fns";
+import { Container } from "@mui/material";
+
+import prismadb from "@/lib/prismadb";
 import ProductMain from "./components/ProductMain";
 
 export default async function ProductsPage({
@@ -23,8 +23,6 @@ export default async function ProductsPage({
     },
   });
 
-  console.log(products);
-
   const categories = await prismadb.category.findMany({
     where: {
       storeId: params.storeId,
@@ -43,16 +41,16 @@ export default async function ProductsPage({
     },
   });
 
-  const parsedProducts: Product[] = products.map((product) => ({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    color: product.color.name,
-    size: product.size.name,
-    category: product.category.name,
+  const parsedProducts = products.map((product) => ({
+    id: `${product.id}`,
+    name: `${product.name}`,
+    price: `${product.price}`,
+    color: `${product.color.name}`,
+    size: `${product.size.name}`,
+    category: `${product.category.name}`,
     isFeatured: `${product.isFeatured}`,
     isArchived: `${product.isArchived}`,
-    createdAt: format(product.createdAt, "MMMM do, yyyy"),
+    createdAt: `${format(product.createdAt, "MMMM do, yyyy")}`,
   }));
 
   return (

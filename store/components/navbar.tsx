@@ -1,46 +1,33 @@
 "use client";
 
+import Link from "next/link";
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import List from "@mui/material/List";
 import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-
+import AppBar from "@mui/material/AppBar";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import Toolbar from "@mui/material/Toolbar";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import MenuIcon from "@mui/icons-material/Menu";
 import BoltIcon from "@mui/icons-material/Bolt";
-import { ColorModeContext } from "@/providers/theme-provider";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
 import { useTheme, useMediaQuery } from "@mui/material";
+import { usePathname, useRouter } from "next/navigation";
+import ListItemButton from "@mui/material/ListItemButton";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
-import { useState } from "react";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import WallpaperIcon from "@mui/icons-material/Wallpaper";
-import CategoryIcon from "@mui/icons-material/Category";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SettingsIcon from "@mui/icons-material/Settings";
-import cartState from "@/hooks/cart-state";
-import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
 import { Category } from "@/types";
+import cartState from "@/hooks/cart-state";
+import { ColorModeContext } from "@/providers/theme-provider";
 
 function ResponsiveAppBar({ categories }: { categories: Category[] }) {
   const [isMounted, setisMounted] = useState(false);

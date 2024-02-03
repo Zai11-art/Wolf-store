@@ -1,14 +1,8 @@
-import prismadb from "@/lib/prismadb";
-import { Container } from "@mui/material";
 import { format } from "date-fns";
-import CategoryMain from "./components/CategoryMain";
+import { Container } from "@mui/material";
 
-type CategoryColumn = {
-  id: string;
-  name: string;
-  placardLabel: string;
-  createdAt: string;
-};
+import prismadb from "@/lib/prismadb";
+import CategoryMain from "./components/CategoryMain";
 
 export default async function ProductsPage({
   params,
@@ -24,14 +18,13 @@ export default async function ProductsPage({
     },
   });
 
-  const convertedCategories: CategoryColumn[] = categories.map((cat) => ({
-    id: cat.id,
-    name: cat.name,
-    placardLabel: cat.placardId,
+  const convertedCategories = categories.map((cat) => ({
+    id: `${cat.id}`,
+    name: `${cat.name}`,
+    placardLabel: `${cat.placardId}`,
     createdAt: format(cat.createdAt, "MMMM do, yyyy"),
+    updatedAt: format(cat.updatedAt, "MMMM do, yyyy"),
   }));
-
-  console.log(categories);
 
   return (
     <Container maxWidth={false}>

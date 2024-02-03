@@ -1,7 +1,7 @@
-import prismadb from "@/lib/prismadb";
-import { Container } from "@mui/material";
-import { Order } from "@prisma/client";
 import { format } from "date-fns";
+import { Container } from "@mui/material";
+
+import prismadb from "@/lib/prismadb";
 import OrdersMain from "./components/OrderMain";
 
 export default async function OrdersPage({
@@ -14,7 +14,7 @@ export default async function OrdersPage({
       storeId: params.storeId,
     },
     include: {
-      orderItems: {
+      orderitems: {
         include: {
           product: true,
         },
@@ -25,14 +25,15 @@ export default async function OrdersPage({
     },
   });
 
-  const convertedOrders: Order[] | undefined = orders?.map((ord) => ({
-    id: ord.id,
-    storeId: ord.storeId,
+  // @ts-ignore
+  const convertedOrders = orders?.map((ord) => ({
+    id: `${ord.id}`,
+    storeId: `${ord.storeId}`,
     isPaid: `${ord.isPaid}`,
-    phone: ord.phone,
-    address: ord.address,
-    createdAt: format(ord.createdAt, "MMMM do, yyyy"),
-    products: ord.orderItems.map((item) => item.product.name).join(", "),
+    phone: `${ord.phone}`,
+    address: `${ord.address}`,
+    createdAt: `${format(ord.createdAt, "MMMM do, yyyy")}`,
+    products: `${ord.orderitems.map((item) => item.product.name).join(", ")}`,
   }));
 
   return (

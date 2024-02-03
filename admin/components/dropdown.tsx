@@ -1,43 +1,33 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Box from "@mui/material/Box";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import MenuList from "@mui/material/MenuList";
-
-import { useTheme } from "@mui/material/styles";
-import { useStoreDialog } from "@/hooks/use-store-dialog";
 import Divider from "@mui/material/Divider";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import { useTheme } from "@mui/material/styles";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-const options = ["Store 1", "Squash and merge"];
+import { Store } from "@prisma/client";
+import { useStoreDialog } from "@/hooks/use-store-dialog";
 
 interface StoreProps {
-  stores: {
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    id: string;
-  }[];
+  stores: Store[];
 }
 
 export default function DropDown({ stores }: StoreProps) {
-  console.log(stores);
   const theme = useTheme();
-  const onOpen = useStoreDialog((state) => state.onOpen);
-  const onClose = useStoreDialog((state) => state.onClose);
   const router = useRouter();
-  const pathName = usePathname();
   const { storeId } = useParams();
+  const onOpen = useStoreDialog((state) => state.onOpen);
 
   const currStore = stores.find((store) => store.id === storeId);
-  console.log(currStore?.name);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);

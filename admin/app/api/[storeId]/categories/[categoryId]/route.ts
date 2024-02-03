@@ -1,15 +1,13 @@
-import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
+
 import { auth } from "@clerk/nextjs";
+import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string; categoryId: string } }
 ) {
   try {
-    console.log("pinged!");
-    console.log(params.categoryId, params.storeId);
-
     if (!params.categoryId) {
       return new NextResponse("Store Id is required", { status: 403 });
     }

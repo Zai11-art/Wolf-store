@@ -1,48 +1,38 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import productPreviewModal from "@/hooks/product-preview-modal";
-import { IconButton, useTheme, Box, useMediaQuery } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import Dialog from "@mui/material/Dialog";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
+import CardContent from "@mui/material/CardContent";
+import { useTheme, Box, useMediaQuery } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import cartState from "@/hooks/cart-state";
-import ImageSLider from "./gallery";
+
 import { Product } from "@/types";
+import ImageSLider from "./gallery";
+import cartState from "@/hooks/cart-state";
+import productPreviewModal from "@/hooks/product-preview-modal";
 
 export default function ProductDialog() {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const md = useMediaQuery("(min-width:800px)");
 
   const theme = useTheme();
   const cart = cartState();
   const productModal = productPreviewModal();
-  const product = productPreviewModal<Product | undefined>(
-    (state) => state.data
+  const product = productPreviewModal<Product | null | undefined>(
+    (state) => state?.data
   );
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
-  const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
   const hoverColorMode = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
+    // @ts-ignore
     cart.addProduct(product);
   };
 
@@ -61,7 +51,6 @@ export default function ProductDialog() {
           "& .MuiPaper-root": {
             borderRadius: "15px",
             height: "550px",
-            // padding: '1px'
           },
         },
       }}
@@ -75,12 +64,7 @@ export default function ProductDialog() {
           }}
         >
           <ImageSLider images={product.images} />
-          {/* <CardMedia
-            component="img"
-            sx={{ width: md ? 400 : "100%" }}
-            image={product.images}
-            alt="Live from space album cover"
-          /> */}
+
           <Box>
             <Button
               onClick={productModal.onClose}
@@ -112,7 +96,6 @@ export default function ProductDialog() {
               padding: 3,
               width: "100%",
               height: "550px",
-              // backgroundColor: "red",
             }}
           >
             <Box>
@@ -177,7 +160,6 @@ export default function ProductDialog() {
                 onClick={addToCard}
                 variant="outlined"
                 sx={{
-                  // backgroundColor: buttonColorMode,
                   color: buttonColorMode,
                   fontWeight: "bold",
                   ":hover": {

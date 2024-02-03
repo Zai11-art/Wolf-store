@@ -1,7 +1,7 @@
+import { Container } from "@mui/material";
+
 import prismadb from "@/lib/prismadb";
 import ProductForm from "./components/product-form";
-import { Container } from "@mui/material";
-import { redirect } from "next/navigation";
 
 export default async function ProductsPage({
   params,
@@ -34,8 +34,6 @@ export default async function ProductsPage({
       storeId: params.storeId,
     },
   });
-
-  //   if (!placard) redirect(`/${params.storeId}`);
 
   return (
     <Container

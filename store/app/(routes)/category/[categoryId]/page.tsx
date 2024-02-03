@@ -1,14 +1,13 @@
-import Placard from "@/components/placard";
+import React from "react";
+import { Container } from "@mui/material";
+
 import {
-  getAllProducts,
   getCategory,
   getColors,
   getProducts,
-  getProducts2,
   getSizes,
 } from "@/fetchers/fetch-data";
-import { Container } from "@mui/material";
-import React from "react";
+import Placard from "@/components/placard";
 import CategoryProduct from "./components/category-product";
 
 const CategoryPage = async ({
@@ -20,19 +19,9 @@ const CategoryPage = async ({
 }) => {
   const products = await getProducts({
     categoryId: params.categoryId,
-    sizeId: searchParams.colorId,
-    colorId: searchParams.sizeId,
+    sizeId: searchParams.sizeId,
+    colorId: searchParams.colorId,
   });
-
-  const products2 = await getProducts2();
-
-  console.log("KOKO DE");
-  console.log(products);
-  console.log(products2);
-
-  // console.log("KOKO DE");
-  // console.log(searchParams.colorId);
-  // console.log(searchParams.sizeId);
 
   const sizes = await getSizes();
   const colors = await getColors();

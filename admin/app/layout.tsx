@@ -1,16 +1,16 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import type { Metadata } from "next";
+// import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import StoreDialog from "@/components/store-dialog";
 import ThemeProvider from "@/providers/theme-provider";
 import { ToastProvider } from "@/providers/toast-provider";
 
-const inter = Inter({ subsets: ["cyrillic"] });
-export const metadata: Metadata = {
-  title: "Wolf Admin",
-  description: "Admin Dashboard",
-};
+// const inter = Inter({ subsets: ["cyrillic"] });
+// export const metadata: Metadata = {
+//   title: "Wolf Admin",
+//   description: "Admin Dashboard",
+// };
 
 export default function RootLayout({
   children,
@@ -23,7 +23,7 @@ export default function RootLayout({
         <ThemeProvider>
           <StoreDialog />
           <ToastProvider />
-          <body className={inter.className}>{children}</body>
+          <body>{children}</body>
         </ThemeProvider>
       </html>
     </ClerkProvider>

@@ -10,20 +10,14 @@ import {
   TextField,
   useMediaQuery,
 } from "@mui/material";
-
-// React hook form
-import ImageUpload from "@/components/image-upload-multiple";
 import axios from "axios";
-import { SetStateAction, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Size } from "@prisma/client";
-import { toast } from "react-toastify";
-
 import * as yup from "yup";
 import { Formik } from "formik";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useParams, useRouter } from "next/navigation";
+
+import { Size } from "@prisma/client";
 
 interface SizeFormProps {
   data: Size | null;
@@ -109,7 +103,6 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
     >
       <Box
         sx={{
-          // marginBottom: "20px",
           display: "flex",
           width: "100%",
           justifyContent: "space-between",

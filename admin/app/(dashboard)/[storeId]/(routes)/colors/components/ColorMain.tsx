@@ -1,32 +1,25 @@
 "use client";
 
-import ApiList from "@/components/api-list";
-import OutlinedCard from "@/components/card";
-import BasicPopover from "@/components/popover";
-import EnhancedTable from "@/components/table";
-import DataTable from "@/components/DataTable";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ColorTypes } from "../page";
+import { Box, Button, Container, Divider, useTheme } from "@mui/material";
+
+import ApiList from "@/components/api-list";
+import DataTable from "@/components/DataTable";
+
+export interface ColorProps {
+  id: string;
+  name: string;
+  value: string;
+  createdAt: string;
+}
 
 interface ColorMainProps {
-  data: ColorTypes[];
+  data: ColorProps[];
 }
 
 const ColorMain: React.FC<ColorMainProps> = ({ data }) => {
   const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
-
   const router = useRouter();
   const params = useParams();
 
@@ -42,7 +35,6 @@ const ColorMain: React.FC<ColorMainProps> = ({ data }) => {
     >
       <Box
         sx={{
-          // marginBottom: "20px",
           display: "flex",
           width: "100%",
           justifyContent: "space-between",
@@ -90,14 +82,13 @@ const ColorMain: React.FC<ColorMainProps> = ({ data }) => {
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}
       />
 
       {/* TABLE HERE */}
-      <DataTable dataType="colors" data={data || []} />
+      <DataTable dataType="colors" data={data ? data : []} />
 
       <Box
         sx={{
@@ -123,7 +114,6 @@ const ColorMain: React.FC<ColorMainProps> = ({ data }) => {
         sx={{
           mb: "30px",
           mt: "20px",
-          // borderBottomWidth: "1px",
           backgroundColor:
             theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
         }}

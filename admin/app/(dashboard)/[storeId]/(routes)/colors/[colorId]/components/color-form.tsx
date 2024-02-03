@@ -8,24 +8,19 @@ import {
   Divider,
   Button,
   TextField,
-  SelectChangeEvent,
   useMediaQuery,
 } from "@mui/material";
-
-// React hook form
-import { SetStateAction, useState } from "react";
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
-import { Color } from "@prisma/client";
-import { MuiColorInput } from "mui-color-input";
-import { toast } from "react-toastify";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import WarningDialog from "@/components/warning-dialog";
 import { Formik } from "formik";
+import { useState } from "react";
+import { Color } from "@prisma/client";
+import { toast } from "react-toastify";
+import { MuiColorInput } from "mui-color-input";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams, useRouter } from "next/navigation";
+
+import WarningDialog from "@/components/warning-dialog";
 
 interface SizeFormProps {
   data: Color | null;
@@ -115,7 +110,6 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
       >
         <Box
           sx={{
-            // marginBottom: "20px",
             display: "flex",
             width: "100%",
             justifyContent: "space-between",
@@ -173,7 +167,6 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
           sx={{
             mb: "30px",
             mt: "20px",
-            // borderBottomWidth: "1px",
             backgroundColor:
               theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
           }}
@@ -194,7 +187,6 @@ const SizeForm: React.FC<SizeFormProps> = ({ data }: SizeFormProps) => {
               handleChange,
               handleSubmit,
               setFieldValue,
-              resetForm,
             }) => (
               <form onSubmit={handleSubmit} noValidate>
                 <Box

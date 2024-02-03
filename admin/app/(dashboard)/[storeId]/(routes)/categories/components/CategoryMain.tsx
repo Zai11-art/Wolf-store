@@ -1,42 +1,29 @@
 "use client";
 
-import ApiList from "@/components/api-list";
-import OutlinedCard from "@/components/card";
-import BasicPopover from "@/components/popover";
-import DataTable from "@/components/DataTable";
-import EnhancedTable from "@/components/table";
-import TableTest from "@/components/DataTable";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { Box, Button, Container, Divider, useTheme } from "@mui/material";
 
-type CategoryColumn = {
+import { Category } from "@prisma/client";
+import ApiList from "@/components/api-list";
+import DataTable from "@/components/DataTable";
+
+export interface CategoryProps {
   id: string;
   name: string;
   placardLabel: string;
   createdAt: string;
-};
+  updatedAt: string;
+}
 
 interface CategoryMainProps {
-  data: CategoryColumn[] | undefined;
+  data: CategoryProps[];
 }
 
 const CategoryMain: React.FC<CategoryMainProps> = ({
   data,
-}: CategoryMainProps | undefined) => {
-  console.log(data);
+}: CategoryMainProps) => {
   const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-  const sm = useMediaQuery("(min-width:1200px)");
-
   const router = useRouter();
   const params = useParams();
 
@@ -52,7 +39,6 @@ const CategoryMain: React.FC<CategoryMainProps> = ({
     >
       <Box
         sx={{
-          // marginBottom: "20px",
           display: "flex",
           width: "100%",
           justifyContent: "space-between",
@@ -107,7 +93,7 @@ const CategoryMain: React.FC<CategoryMainProps> = ({
       />
 
       {/* TABLE HERE */}
-      <DataTable dataType="categories" data={data || []} />
+      <DataTable dataType="categories" data={data ? data : []} />
 
       <Box
         sx={{

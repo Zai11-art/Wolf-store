@@ -1,24 +1,23 @@
 import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 
-import SplitButton from "./settings-dropdown";
-import WarningDialog from "./warning-dialog";
-import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
-const ButtonSet = () => {
-  return <Button></Button>;
-};
+import { Category } from "@prisma/client";
+import WarningDialog from "./warning-dialog";
+import SplitButton from "./settings-dropdown";
+import { CategoryProps } from "@/app/(dashboard)/[storeId]/(routes)/categories/components/CategoryMain";
+import { ColorProps } from "@/app/(dashboard)/[storeId]/(routes)/colors/components/ColorMain";
+import { OrderProps } from "@/app/(dashboard)/[storeId]/(routes)/orders/components/OrderMain";
+import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/components/PlacardMain";
+import { ProductProps } from "@/app/(dashboard)/[storeId]/(routes)/products/components/ProductMain";
 
 const DataTable = ({
   data,
   dataType,
 }: {
-  data: PlacardProps[] | undefined;
+  data: CategoryProps[] | ColorProps[] | OrderProps[] | PlacardProps[] | ProductProps[] |undefined;
   dataType: string;
 }) => {
   const [isMounted, setMounted] = React.useState(false);
@@ -30,17 +29,28 @@ const DataTable = ({
   }, [data]);
 
   // @ts-ignore
-  const columns = React.useMemo<MRT_ColumnDef<PlacardProps>[]>(() => {
+  const columns = React.useMemo<MRT_ColumnDef<Category | ColorProps | OrderProps | PlacardProps | ProductProps>[]>(() => {
     if (dataType === "placards") {
       return [
         {
-          accessorKey: "label", //access nested data with dot notation
-          header: "Placard Label",
-          size: 150,
-        },
-        {
           accessorKey: "id", //access nested data with dot notation
           header: "Placard Id",
+          size: 150,
+          enableClickToCopy: true,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
+        },
+        {
+          accessorKey: "label", //access nested data with dot notation
+          header: "Placard Label",
           size: 150,
         },
         {
@@ -311,7 +321,7 @@ const DataTable = ({
           header: "Options",
           size: 150,
           Cell: ({ cell }) => (
-            <SplitButton dataType="orders" id={cell.row.original.id} />
+            <SplitButton dataType="products" id={cell.row.original.id} />
           ),
         },
       ];
@@ -325,7 +335,8 @@ const DataTable = ({
         muiTableContainerProps={{ sx: { height: "300px" } }}
         enableGrouping
         columns={columns}
-        data={data || []}
+        // @ts-ignore
+        data={data}
       />
     </>
   );

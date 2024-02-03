@@ -1,8 +1,8 @@
-import prismadb from "@/lib/prismadb";
-import { Container } from "@mui/material";
 import { format } from "date-fns";
+import { Container } from "@mui/material";
+
+import prismadb from "@/lib/prismadb";
 import ColorMain from "./components/ColorMain";
-import { Color } from "@prisma/client";
 
 export type ColorTypes = {
   id: string;

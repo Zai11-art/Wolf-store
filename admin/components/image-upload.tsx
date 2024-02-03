@@ -2,25 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
+import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, useTheme, useMediaQuery } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/page";
-import SwipeableTextMobileStepper from "./image-carousel";
-import CloseIcon from "@mui/icons-material/Close";
-import { Image } from "@prisma/client";
 
-interface ImageUploadProps {
-  disabled?: boolean;
-  setFieldValue: ({
-    value,
-    imageUrl,
-  }: {
-    value: string;
-    imageUrl: { info: { secure_url?: string } };
-  }) => void;
-  value: string[];
-}
+import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/components/PlacardMain";
 
 const ImageUpload = ({
   data,

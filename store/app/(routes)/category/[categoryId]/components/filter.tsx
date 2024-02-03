@@ -1,23 +1,23 @@
 "use client";
 
-import { Color, Size } from "@/types";
-import { Box, Button, Typography, useTheme } from "@mui/material";
-import { useRouter, useSearchParams } from "next/navigation";
-import qs from "query-string";
 import React from "react";
+import qs from "query-string";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Box, Button, Typography, useTheme } from "@mui/material";
+
+import { Color, Size } from "@/types";
 
 interface FilterColProps {
   data: Size[] | Color[];
   name: string;
-  key: string;
+  acceessor: string;
 }
 
-const FilterCol: React.FC<FilterColProps> = ({ data, name, key }) => {
+const FilterCol: React.FC<FilterColProps> = ({ data, name, acceessor }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const theme = useTheme();
-
-  const selectedValue = searchParams.get(key);
+  const selectedValue = searchParams.get(acceessor);
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
   const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
@@ -26,16 +26,16 @@ const FilterCol: React.FC<FilterColProps> = ({ data, name, key }) => {
 
   const onSelect = (id: string) => {
     const current = qs.parse(searchParams.toString());
-    console.log(current);
 
     const query = {
       ...current,
-      [key]: id,
+      [acceessor]: id,
     };
+    console.log("QUERY HERE");
     console.log(query);
 
-    if (current[key] === id) {
-      query[key] = null;
+    if (current[acceessor] === id) {
+      query[acceessor] = null;
     }
 
     const url = qs.stringifyUrl(
@@ -73,7 +73,7 @@ const FilterCol: React.FC<FilterColProps> = ({ data, name, key }) => {
               padding: "8px",
               margin: "5px",
               fontSize: "0.8em",
-              opacity: selectedValue === tab.id ? 50 : 100,
+              border: selectedValue === tab.id ? "2px solid red" : "",
             }}
             key={tab.id}
             onClick={() => onSelect(tab.id)}

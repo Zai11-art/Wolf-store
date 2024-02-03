@@ -1,10 +1,11 @@
 "use client";
 
-import ProductCard from "@/components/product-card";
-import { Color, Product, Size } from "@/types";
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
+import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
+
 import FilterCol from "./filter";
+import { Color, Product, Size } from "@/types";
+import ProductCard from "@/components/product-card";
 
 const CategoryProduct = ({
   sizes,
@@ -17,11 +18,9 @@ const CategoryProduct = ({
 }) => {
   const md = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
-  console.log(products);
 
   return (
     <Box
-      // maxWidth={false}
       sx={{
         backgroundColor: "",
         width: "100%",
@@ -29,15 +28,14 @@ const CategoryProduct = ({
         display: "flex",
         justifyContent: "center",
         flexDirection: md ? "row" : "column",
-        // marginLeft: "100px",
       }}
     >
       <Box
         // maxWidth={false}
         sx={{ backgroundColor: "", width: "300px" }}
       >
-        <FilterCol key="sizeId" name="Sizes" data={sizes} />
-        <FilterCol key="colorId" name="Colors" data={colors} />
+        <FilterCol acceessor="sizeId" name="Sizes" data={sizes} />
+        <FilterCol acceessor="colorId" name="Colors" data={colors} />
       </Box>
       <Box
         className={
@@ -54,11 +52,16 @@ const CategoryProduct = ({
             justifyContent: md ? "" : "center",
             width: "100%",
             display: "flex",
-            paddingX: 2
+            padding: 2,
+            gap: 5,
           }}
         >
           {products.map((product) => (
-            <Grid sx={{ paddingY: 3, width: "100%", display: "flex" }}>
+            <Grid
+              sx={{
+                display: "flex",
+              }}
+            >
               <ProductCard data={product} />
             </Grid>
           ))}

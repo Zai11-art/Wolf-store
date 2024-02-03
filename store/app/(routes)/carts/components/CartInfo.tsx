@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -6,14 +5,13 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import Image from "next/image";
-import cartState from "@/hooks/cart-state";
+import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+
 import { Product } from "@/types";
+import cartState from "@/hooks/cart-state";
 
 const CartInfo = ({ data }: { data: Product }) => {
-  console.log(data);
-
   const cart = cartState();
   const theme = useTheme();
   const md = useMediaQuery("(min-width:500px)");
@@ -23,7 +21,6 @@ const CartInfo = ({ data }: { data: Product }) => {
   };
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
-  const buttonTextMode = theme.palette.mode === "dark" ? "black" : " white";
   const hoverColorMode = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
   const cardColorMode = theme.palette.mode === "dark" ? "#262626" : " white";

@@ -8,22 +8,18 @@ import {
   Divider,
   Button,
   TextField,
-  Stack,
   useMediaQuery,
 } from "@mui/material";
-
-// React hook form
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Placard } from "@prisma/client";
-import { toast } from "react-toastify";
-
 import * as yup from "yup";
 import { Formik } from "formik";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams, useRouter } from "next/navigation";
+
+import { Placard } from "@prisma/client";
 import ImageUpload from "@/components/image-upload";
-import { PlacardProps } from "../../page";
 
 const formSchema = yup.object().shape({
   label: yup
@@ -34,9 +30,15 @@ const formSchema = yup.object().shape({
   imageUrl: yup.string().min(1).required("Image is Required"),
 });
 
+interface PlacardFormProps {
+  data: Placard | null;
+}
+
 type PlacardFormValuesTypes = yup.InferType<typeof formSchema>;
 
-export default function PlacardForm({ data }: { data: PlacardProps }) {
+const PlacardForm: React.FC<PlacardFormProps> = ({
+  data,
+}: PlacardFormProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const md = useMediaQuery("(min-width:1000px)");
@@ -60,7 +62,6 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
   const hoverTextMode2 = theme.palette.mode === "dark" ? "white" : " black";
 
   // for cloudinary
-
   const onSubmit = async (payload: PlacardFormValuesTypes) => {
     console.log(payload);
     try {
@@ -170,7 +171,6 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
           sx={{
             mb: "30px",
             mt: "20px",
-            // borderBottomWidth: "1px",
             backgroundColor:
               theme.palette.mode === "dark" ? "#555555" : "#c4c4c4",
           }}
@@ -190,7 +190,6 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
               handleChange,
               handleSubmit,
               setFieldValue,
-              resetForm,
             }) => (
               <form
                 onSubmit={handleSubmit}
@@ -286,4 +285,5 @@ export default function PlacardForm({ data }: { data: PlacardProps }) {
       </Container>
     </>
   );
-}
+};
+export default PlacardForm;

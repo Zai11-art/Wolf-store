@@ -1,6 +1,7 @@
-import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+
+import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
@@ -88,11 +89,7 @@ export async function PATCH(
     if (!isFeatured) {
       return new NextResponse("Feature Selection is required", { status: 403 });
     }
-    if (!isArchived) {
-      return new NextResponse("Archived Selection is required", {
-        status: 403,
-      });
-    }
+
     if (!params.storeId) {
       return new NextResponse("Store ID is required", { status: 400 });
     }
@@ -173,6 +170,7 @@ export async function DELETE(
     const products = await prismadb.product.deleteMany({
       where: {
         id: params.productId,
+        storeId: params.storeId,
       },
     });
 

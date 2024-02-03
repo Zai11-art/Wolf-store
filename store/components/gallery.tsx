@@ -1,25 +1,14 @@
 "use client";
 
-import Slider from "react-slick";
-
-import Carousel from "react-material-ui-carousel";
+import Image from "next/image";
 import Box from "@mui/material/Box";
 import { useMediaQuery } from "@mui/material";
-import { Image as ImageType } from "@/types";
-import Image from "next/image";
+import Carousel from "react-material-ui-carousel";
 
-const dummyData = [
-  {
-    url: "https://images.pexels.com/photos/802024/pexels-photo-802024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    url: `https://images.pexels.com/photos/1770775/pexels-photo-1770775.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load`,
-  },
-];
+import { Image as ImageType } from "@/types";
 
 const ImageSLider = ({ images }: { images: ImageType[] }) => {
   const md = useMediaQuery("(min-width:800px)");
-  const lg = useMediaQuery("(min-width:1000px)");
 
   return (
     <Box
@@ -35,7 +24,6 @@ const ImageSLider = ({ images }: { images: ImageType[] }) => {
         navButtonsAlwaysVisible={true}
         swipe
         sx={{
-          // backgroundColor: "red",
           width: "100%",
           height: "100%",
         }}

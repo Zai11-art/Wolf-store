@@ -10,28 +10,19 @@ import {
   TextField,
   useMediaQuery,
 } from "@mui/material";
-
-// React hook form
-import ImageUpload from "@/components/image-upload-multiple";
 import axios from "axios";
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Store } from "@prisma/client";
-
 import * as yup from "yup";
-import ApiCard from "@/components/api-card";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from "react-toastify";
-import { useRoot } from "@/hooks/use-root";
-import DeleteIcon from "@mui/icons-material/Delete";
-import WarningDialog from "@/components/warning-dialog";
 import { Formik } from "formik";
-import { useWarningDialog } from "@/hooks/use-edit-dialog";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Store } from "@prisma/client";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useParams, useRouter } from "next/navigation";
 
-interface FormValue {
-  name: string;
-}
+import { useRoot } from "@/hooks/use-root";
+import ApiCard from "@/components/api-card";
+import WarningDialog from "@/components/warning-dialog";
+import { useWarningDialog } from "@/hooks/use-edit-dialog";
 
 interface SettingsFormProps {
   data: Store;
@@ -113,7 +104,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
         <div>
           <Box
             sx={{
-              // marginBottom: "20px",
               display: "flex",
               width: "100%",
               justifyContent: "space-between",
@@ -191,8 +181,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ data }) => {
                 handleBlur,
                 handleChange,
                 handleSubmit,
-                setFieldValue,
-                resetForm,
               }) => (
                 <form onSubmit={handleSubmit} noValidate>
                   <Box
