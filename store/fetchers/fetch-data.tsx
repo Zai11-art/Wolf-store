@@ -104,7 +104,7 @@ export const getSizes = async (): Promise<Size[]> => {
 };
 
 // GET ALL PRODUCTS
-export const getAllProducts = async (): Promise<Size[]> => {
+export const getAllProducts = async (): Promise<Product[]> => {
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/products`
   );

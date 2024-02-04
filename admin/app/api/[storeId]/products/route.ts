@@ -68,6 +68,8 @@ export async function POST(
       sizeId,
       isFeatured,
       isArchived,
+      description,
+      stocks,
     } = body;
 
     const dataHere = {
@@ -79,6 +81,8 @@ export async function POST(
       sizeId,
       isFeatured,
       isArchived,
+      description,
+      stocks,
     };
 
     console.log(dataHere);
@@ -103,6 +107,12 @@ export async function POST(
     }
     if (!sizeId) {
       return new NextResponse("Size ID is required", { status: 403 });
+    }
+    if (!description) {
+      return new NextResponse("Description is required", { status: 403 });
+    }
+    if (!stocks) {
+      return new NextResponse("Stock count is required", { status: 403 });
     }
 
     if (!params.storeId) {
@@ -134,6 +144,8 @@ export async function POST(
         sizeId,
         isFeatured,
         isArchived,
+        description,
+        stocks,
         storeId: params.storeId,
       },
     });

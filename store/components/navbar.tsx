@@ -25,14 +25,26 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
-import { Category } from "@/types";
+import { Category, Product } from "@/types";
 import cartState from "@/hooks/cart-state";
 import { ColorModeContext } from "@/providers/theme-provider";
+import SearchBar from "./searchbar";
+import { useAuth, UserButton } from "@clerk/nextjs";
+import { toast } from "react-toastify";
 
-function ResponsiveAppBar({ categories }: { categories: Category[] }) {
+function ResponsiveAppBar({
+  categories,
+  products,
+}: {
+  categories: Category[];
+  products: Product[];
+}) {
+  // CHECK IF USER LOGGED IN EXISTS
+  const { userId: isAuth } = useAuth();
+
   const [isMounted, setisMounted] = useState(false);
   const colorMode = React.useContext(ColorModeContext);
-  const md = useMediaQuery("(min-width:500px)");
+  const md = useMediaQuery("(min-width:900px)");
   const theme = useTheme();
   const router = useRouter();
   const pathName = usePathname();
@@ -79,8 +91,19 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
   const [openSlider, setOpenSlider] = useState(false);
 
   const list = () => (
-    <Box sx={{ width: 250 }} role="presentation">
+    <Box sx={{ width: 300 }} role="presentation">
       <List>
+        <ListItem
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingX: 2,
+          }}
+          disablePadding
+        >
+          {!md && <SearchBar data={products ? products : []} />}
+        </ListItem>
         {data?.map((page) => (
           <Link
             href={page.href}
@@ -90,7 +113,7 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemText
-                  sx={{ textDecoration: "none", color: "white" }}
+                  sx={{ textDecoration: "none", color: textColor }}
                   primary={page.label}
                 />
               </ListItemButton>
@@ -158,12 +181,14 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
               <MenuIcon />
             </IconButton>
             <Drawer
+              sx={{ padding: 5 }}
               open={openSlider}
               onClose={() => setOpenSlider(!openSlider)}
             >
               {list()}
             </Drawer>
           </Box>
+
           <BoltIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -215,6 +240,12 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
               alignItems="center"
               spacing={0.2}
             >
+              {md && (
+                <Box sx={{ width: 275 }}>
+                  <SearchBar data={products ? products : []} />
+                </Box>
+              )}
+
               <IconButton
                 onClick={colorMode.toggleColorMode}
                 sx={{ ml: 1 }}
@@ -228,7 +259,14 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
               </IconButton>
 
               <Button
-                onClick={() => router.push(`/carts`)}
+                onClick={() => {
+                  if (isAuth) {
+                    router.push(`/carts`);
+                  } else {
+                    toast.error("Sign in to add items and access cart.");
+                    router.push("/sign-in");
+                  }
+                }}
                 sx={{
                   backgroundColor: buttonColorMode,
                   color: buttonTextMode,
@@ -246,6 +284,8 @@ function ResponsiveAppBar({ categories }: { categories: Category[] }) {
                 {productCount.items.length}
                 <ShoppingBagIcon />
               </Button>
+
+              <UserButton />
             </Stack>
           </Box>
         </Toolbar>

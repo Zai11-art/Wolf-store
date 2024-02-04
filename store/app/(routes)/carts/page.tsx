@@ -3,20 +3,29 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, useMediaQuery } from "@mui/material";
 
+import { useAuth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 import cartState from "@/hooks/cart-state";
 import CartInfo from "./components/CartInfo";
 import CartSummary from "./components/Cart-Summary";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const [isMounted, setisMounted] = useState(false);
   const cart = cartState();
   const md = useMediaQuery("(min-width:1000px)");
+  const { userId: isAuth } = useAuth();
 
   useEffect(() => {
     setisMounted(true);
   }, []);
 
   if (!isMounted) return null;
+
+  if (!isAuth) {
+    toast.error("Sign in to access and add items to your cart.");
+    return redirect("/sign-in");
+  }
 
   return (
     <Container

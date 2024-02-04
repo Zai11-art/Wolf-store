@@ -55,6 +55,8 @@ const formSchema = yup
     sizeId: yup.string().min(1),
     isFeatured: yup.boolean().default(false).optional(),
     isArchived: yup.boolean().default(false).optional(),
+    description: yup.string().min(1),
+    stocks: yup.number().min(1),
   })
   .required();
 
@@ -93,30 +95,32 @@ const ProductForm: React.FC<ProductFormProps> = ({
     sizeId: `${data ? data?.sizeId : ""}`,
     isFeatured: data ? data?.isFeatured : false,
     isArchived: data ? data?.isArchived : false,
+    description: `${data ? data?.description : ""}`,
+    stocks: `${data ? data?.stocks : ""}`,
   };
 
   // FIX ROUTES
   const onSubmit = async (payload: ProductFormValuesTypes) => {
     console.log(payload);
-    try {
-      setLoading(true);
-      if (data) {
-        await axios.patch(
-          `/api/${params.storeId}/products/${params.productId}`,
-          payload
-        );
-      } else {
-        await axios.post(`/api/${params.storeId}/products`, payload);
-      }
-      router.refresh();
-      router.push(`/${params.storeId}/products`);
-      toast.success("Submitted successfully");
-    } catch (error) {
-      console.log("[ERROR_SUBMIT_PRODUCT]", error);
-      toast.error("Error submitting.");
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   setLoading(true);
+    //   if (data) {
+    //     await axios.patch(
+    //       `/api/${params.storeId}/products/${params.productId}`,
+    //       payload
+    //     );
+    //   } else {
+    //     await axios.post(`/api/${params.storeId}/products`, payload);
+    //   }
+    //   router.refresh();
+    //   router.push(`/${params.storeId}/products`);
+    //   toast.success("Submitted successfully");
+    // } catch (error) {
+    //   console.log("[ERROR_SUBMIT_PRODUCT]", error);
+    //   toast.error("Error submitting.");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const onDelete = async () => {
@@ -299,6 +303,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                           required
                         />
                       </Box>
+
                       <Box
                         sx={{
                           marginY: md ? "30px" : null,
@@ -323,6 +328,45 @@ const ProductForm: React.FC<ProductFormProps> = ({
                           variant="outlined"
                           name="price"
                           required
+                        />
+                      </Box>
+                    </Box>
+
+                    {/* PRODUCT DESCRIPTION HERE */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        gap: 5,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
+                        >
+                          Product Description
+                        </Typography>
+                        <TextField
+                          sx={{ width: "100%", height: "100%" }}
+                          label="Description"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.description}
+                          error={
+                            Boolean(touched.description) &&
+                            Boolean(errors.description)
+                          }
+                          helperText={touched.description && errors.description}
+                          variant="outlined"
+                          name="description"
+                          required
+                          multiline
+                          rows={10}
                         />
                       </Box>
                     </Box>
@@ -499,6 +543,34 @@ const ProductForm: React.FC<ProductFormProps> = ({
                         <Typography
                           sx={{ fontWeight: "bold", marginY: "15px" }}
                         >
+                          Stocks Available
+                        </Typography>
+                        <TextField
+                          sx={{ width: "100%", height: "100%" }}
+                          label="Stocks"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.stocks}
+                          error={
+                            Boolean(touched.stocks) && Boolean(errors.stocks)
+                          }
+                          helperText={touched.stocks && errors.stocks}
+                          variant="outlined"
+                          name="stocks"
+                          required
+                          type="number"
+                        />
+                      </Box>
+
+                      <Box
+                        sx={{
+                          marginY: md ? "30px" : null,
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "bold", marginY: "15px" }}
+                        >
                           Feature Product?
                         </Typography>
                         <FormControlLabel
@@ -515,6 +587,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                           label="Featured"
                         />
                       </Box>
+
                       <Box
                         sx={{
                           marginY: md ? "30px" : null,

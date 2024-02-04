@@ -16,6 +16,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Product } from "@/types";
 import cartState from "@/hooks/cart-state";
 import productPreviewModal from "@/hooks/product-preview-modal";
+import { useAuth } from "@clerk/nextjs";
+import { toast } from "react-toastify";
 
 interface ProductCardProps {
   data: Product;
@@ -26,13 +28,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }: {
   data: Product;
 }) => {
+  // CHECK IF USER LOGGED IN EXISTS
+  const { userId: isAuth } = useAuth();
+
   const theme = useTheme();
   const router = useRouter();
   const previewModal = productPreviewModal();
   const cart = cartState();
-
-  const onOpen = productPreviewModal((state) => state.onOpen);
-  const onClose = productPreviewModal((state) => state.onClose);
   const md = useMediaQuery("(min-width:768px)");
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
@@ -41,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
   const handleViewProduct = () => {
-    router.push(`/product/${data?.id}`);
+    isAuth ? router.push(`/product/${data?.id}`) : router.push(`/sign-in`);
   };
 
   const previewProduct: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -54,6 +56,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
+
+    if (!isAuth) {
+      toast.error("Sign in to add item to cart.");
+      router.push("/sign-in");
+    }
 
     cart.addProduct(data);
   };
