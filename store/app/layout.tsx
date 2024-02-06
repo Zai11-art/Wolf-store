@@ -12,6 +12,7 @@ import ProductDialog from "@/components/product-dialog";
 import { ToastProvider } from "@/providers/toast-provider";
 import ThemeContainerProvider from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import BuyProductDialog from "@/components/buy-product-dialog";
 
 const inter = Tilt_Neon({ subsets: ["latin"] });
 
@@ -32,8 +33,9 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <ThemeContainerProvider>
-          <ToastProvider />
           <ProductDialog />
+          <BuyProductDialog />
+          <ToastProvider />
           <body className={inter.className}>
             <ResponsiveAppBar products={products} categories={categories} />
             {children}

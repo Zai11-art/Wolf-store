@@ -7,8 +7,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import CardContent from "@mui/material/CardContent";
-import { useTheme, Box, useMediaQuery } from "@mui/material";
+import { useTheme, Box, useMediaQuery, Rating } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
 import { Product } from "@/types";
 import ImageSLider from "./gallery";
@@ -32,8 +33,13 @@ export default function ProductDialog() {
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
-    // @ts-ignore
-    cart.addProduct(product);
+    if (cart.items.some((item) => item.id === product?.id)) {
+      // @ts-ignore
+      cart.removeProduct(product?.id);
+    } else {
+      // @ts-ignore
+      cart.addProduct(product);
+    }
   };
 
   if (!product) {
@@ -149,6 +155,17 @@ export default function ProductDialog() {
               >
                 Color: {product.color.name}
               </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+                sx={{ fontFamily: "inherit" }}
+              >
+                Description: {product.description}
+              </Typography>
+
+              <Typography component="legend"> Rating:</Typography>
+              <Rating name="read-only" value={3.2} readOnly />
             </CardContent>
 
             <Box
@@ -173,8 +190,20 @@ export default function ProductDialog() {
                   borderColor: buttonColorMode,
                 }}
               >
-                <AddShoppingCartIcon sx={{ marginRight: 1 }} />
-                Add this to cart
+                {cart.items.some((item) => item.id === product.id) ? (
+                  <>
+                    <RemoveShoppingCartIcon color="error" />
+                    Remove to cart
+                  </>
+                ) : (
+                  <>
+                    <AddShoppingCartIcon
+                      color="success"
+                      sx={{ marginRight: 1 }}
+                    />
+                    Add to cart
+                  </>
+                )}
               </Button>
             </Box>
           </Box>

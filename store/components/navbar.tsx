@@ -238,7 +238,7 @@ function ResponsiveAppBar({
               direction="row"
               justifyContent="center"
               alignItems="center"
-              spacing={0.2}
+              gap={1}
             >
               {md && (
                 <Box sx={{ width: 275 }}>
@@ -246,11 +246,7 @@ function ResponsiveAppBar({
                 </Box>
               )}
 
-              <IconButton
-                onClick={colorMode.toggleColorMode}
-                sx={{ ml: 1 }}
-                color="inherit"
-              >
+              <IconButton onClick={colorMode.toggleColorMode} color="inherit">
                 {theme.palette.mode === "dark" ? (
                   <Brightness7Icon />
                 ) : (

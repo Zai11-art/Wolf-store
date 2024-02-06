@@ -102,25 +102,25 @@ const ProductForm: React.FC<ProductFormProps> = ({
   // FIX ROUTES
   const onSubmit = async (payload: ProductFormValuesTypes) => {
     console.log(payload);
-    // try {
-    //   setLoading(true);
-    //   if (data) {
-    //     await axios.patch(
-    //       `/api/${params.storeId}/products/${params.productId}`,
-    //       payload
-    //     );
-    //   } else {
-    //     await axios.post(`/api/${params.storeId}/products`, payload);
-    //   }
-    //   router.refresh();
-    //   router.push(`/${params.storeId}/products`);
-    //   toast.success("Submitted successfully");
-    // } catch (error) {
-    //   console.log("[ERROR_SUBMIT_PRODUCT]", error);
-    //   toast.error("Error submitting.");
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      if (data) {
+        await axios.patch(
+          `/api/${params.storeId}/products/${params.productId}`,
+          payload
+        );
+      } else {
+        await axios.post(`/api/${params.storeId}/products`, payload);
+      }
+      router.refresh();
+      router.push(`/${params.storeId}/products`);
+      toast.success("Submitted successfully");
+    } catch (error) {
+      console.log("[ERROR_SUBMIT_PRODUCT]", error);
+      toast.error("Error submitting.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onDelete = async () => {

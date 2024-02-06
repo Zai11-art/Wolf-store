@@ -23,6 +23,7 @@ export interface ProductProps {
   price: string;
   color: string;
   size: string;
+  stocks: string;
   category: string;
   isFeatured: string;
   isArchived: string;

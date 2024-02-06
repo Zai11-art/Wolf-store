@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import { Container, Box, Typography, useMediaQuery } from "@mui/material";
 
@@ -8,7 +9,6 @@ import { redirect } from "next/navigation";
 import cartState from "@/hooks/cart-state";
 import CartInfo from "./components/CartInfo";
 import CartSummary from "./components/Cart-Summary";
-import { toast } from "react-toastify";
 
 const CartPage = () => {
   const [isMounted, setisMounted] = useState(false);

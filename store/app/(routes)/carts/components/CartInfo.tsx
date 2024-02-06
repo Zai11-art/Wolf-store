@@ -4,9 +4,13 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Rating,
+  IconButton,
 } from "@mui/material";
 import React from "react";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import { Product } from "@/types";
 import cartState from "@/hooks/cart-state";
@@ -60,19 +64,26 @@ const CartInfo = ({ data }: { data: Product }) => {
         >
           <Box
             sx={{
-              //   backgroundColor: "red",
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              color="text.primary"
-              variant={md ? "h4" : "h6"}
-              sx={{ fontFamily: "inherit" }}
-            >
-              {data.name}
-            </Typography>
+            <Box>
+              <Box display="flex" alignItems="center" sx={{ gap: 1 }}>
+                <Typography
+                  color="text.primary"
+                  variant={md ? "h4" : "h6"}
+                  sx={{ fontFamily: "inherit" }}
+                >
+                  {data.name}
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex" }}>
+                <Rating name="read-only" value={5} readOnly />
+              </Box>
+            </Box>
+
             <Button
               onClick={removeProduct}
               sx={{
@@ -95,27 +106,68 @@ const CartInfo = ({ data }: { data: Product }) => {
               <CloseIcon sx={{ height: "20px", width: "20px" }} />
             </Button>
           </Box>
-          <Typography
-            variant={"subtitle1"}
-            color="text.secondary"
-            sx={{ fontFamily: "inherit" }}
-          >
-            Price: {`${parseInt(data.price).toFixed(2).toString()}`}
-          </Typography>
-          <Typography
-            variant={"subtitle1"}
-            color="text.secondary"
-            sx={{ fontFamily: "inherit" }}
-          >
-            Category: {data.category.name}
-          </Typography>
-          <Typography
-            variant={"subtitle1"}
-            color="text.secondary"
-            sx={{ fontFamily: "inherit" }}
-          >
-            Color: {data.color.name}
-          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography
+              variant={"subtitle1"}
+              color="text.secondary"
+              sx={{ fontFamily: "inherit" }}
+            >
+              Price: ${`${parseInt(data.price).toFixed(2).toString()}`}
+            </Typography>
+            <Typography
+              variant={"subtitle1"}
+              color="text.secondary"
+              sx={{ fontFamily: "inherit" }}
+            >
+              Category: {data.category.name}
+            </Typography>
+            <Typography
+              variant={"subtitle1"}
+              color="text.secondary"
+              sx={{ fontFamily: "inherit" }}
+            >
+              Color: {data.color.name}
+            </Typography>
+
+            <Box
+              sx={{ display: "flex", width: "100%", flexDirection: "column" }}
+            >
+              <Box
+                sx={{ display: "flex" }}
+                width="100%"
+                justifyContent={"space-between"}
+              >
+                <Typography
+                  variant={"subtitle1"}
+                  color="text.secondary"
+                  sx={{ fontFamily: "inherit" }}
+                >
+                  Qty: (amount here)
+                </Typography>
+
+                {/* QUANTITY INCREMENTOR/DECREMENTOR */}
+                <Box display="flex" alignItems="center" sx={{ gap: 1 }}>
+                  <IconButton size="small">
+                    <RemoveIcon />
+                  </IconButton>
+                  <Box
+                    borderRadius={1}
+                    sx={{
+                      backgroundColor: buttonColorMode,
+                      paddingX: 1,
+                      color: hoverColorMode,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    1
+                  </Box>
+                  <IconButton size="small">
+                    <AddIcon />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>

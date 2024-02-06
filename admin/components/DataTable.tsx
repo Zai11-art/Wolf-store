@@ -297,6 +297,11 @@ const DataTable = ({
           size: 150,
         },
         {
+          accessorKey: "stocks", //access nested data with dot notation
+          header: "Stocks",
+          size: 150,
+        },
+        {
           accessorKey: "price", //access nested data with dot notation
           header: "Total Price",
           size: 150,
@@ -343,13 +348,3 @@ const DataTable = ({
 };
 
 export default DataTable;
-
-// renderCell: (params) => {
-//   return (
-//     <Stack direction="row" spacing={2}>
-//       <Button variant="text" color="inherit" size="small">
-//         <SettingsIcon />
-//       </Button>
-//     </Stack>
-//   );
-// },

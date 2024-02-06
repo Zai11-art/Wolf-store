@@ -7,11 +7,13 @@ import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
+import CheckIcon from "@mui/icons-material/Check";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
 import { Product } from "@/types";
 import cartState from "@/hooks/cart-state";
@@ -62,7 +64,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
       router.push("/sign-in");
     }
 
-    cart.addProduct(data);
+    if (cart.items.some((item) => item.id === data.id)) {
+      cart.removeProduct(data.id);
+    } else {
+      cart.addProduct(data);
+    }
   };
 
   return (
@@ -132,7 +138,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           size="small"
         >
           <ZoomInIcon fontSize="small" />
-          CHECK OUT!
+          View
         </Button>
         <Button
           onClick={addToCard}
@@ -145,12 +151,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
               color: hoverTextMode,
             },
             fontFamily: "inherit",
-
             borderRadius: "20px",
           }}
           size="small"
         >
-          <AddShoppingCartIcon />
+          {cart.items.some((item) => item.id === data.id) ? (
+            <RemoveShoppingCartIcon color="error" />
+          ) : (
+            <AddShoppingCartIcon color="success" />
+          )}
         </Button>
       </CardActions>
     </Card>

@@ -47,6 +47,7 @@ export default async function ProductsPage({
     price: `${product.price}`,
     color: `${product.color.name}`,
     size: `${product.size.name}`,
+    stocks: `${product.stocks}`,
     category: `${product.category.name}`,
     isFeatured: `${product.isFeatured}`,
     isArchived: `${product.isArchived}`,

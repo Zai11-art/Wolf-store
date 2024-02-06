@@ -15,9 +15,8 @@ const ProductViewer = ({ product }: { product: Product }) => {
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        marginTop: 8,
-        marginBottom: 12,
         flexDirection: md ? "row" : "column",
+        marginY: 12
       }}
     >
       <ImageSLider images={product.images} />

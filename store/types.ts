@@ -7,6 +7,8 @@ export interface Product {
   size: Size;
   color: Color;
   images: Image[];
+  stocks: string;
+  description: string;
 }
 
 export interface Image {

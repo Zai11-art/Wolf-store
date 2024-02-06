@@ -19,7 +19,6 @@ const CartSummary = () => {
   const searchParams = useSearchParams();
   const products = cartState((state) => state.items);
   const removeAllProducts = cartState((state) => state.removeAll);
-  console.log(products);
   const theme = useTheme();
   const md = useMediaQuery("(min-width:1000px)");
 
@@ -57,8 +56,6 @@ const CartSummary = () => {
       window.location = response.data.url;
       removeAllProducts();
     }
-    // console.log("CHECK HERE");
-    // console.log(response);
   };
 
   return (

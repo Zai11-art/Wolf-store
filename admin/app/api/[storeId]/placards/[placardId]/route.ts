@@ -46,13 +46,8 @@ export async function PATCH(
   }
 ) {
   try {
-    const { userId } = auth();
     const body = await req.json();
     const { label, imageUrl } = body;
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
 
     if (!label) {
       return new NextResponse("Label is required", { status: 400 });
@@ -69,7 +64,6 @@ export async function PATCH(
     const store = await prismadb.store.findFirst({
       where: {
         id: params.storeId,
-        userId: userId,
       },
     });
 
