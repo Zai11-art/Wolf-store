@@ -7,7 +7,7 @@ import { getFeaturedProducts, getPlacard } from "@/fetchers/fetch-data";
 
 const page = async () => {
   const products = await getFeaturedProducts();
-  const placard = await getPlacard("69463fc0-6f49-407a-ac20-5685e69c9b0b");
+  const placard = await getPlacard("830f7edf-2e3b-4a26-97cb-e06b2d498e83");
 
   console.log(placard);
 

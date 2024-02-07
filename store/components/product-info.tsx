@@ -24,7 +24,6 @@ import cartState from "@/hooks/cart-state";
 import buyProductModal from "@/hooks/buy-product-modal";
 
 const ProductInfo = ({ product }: { product: Product }) => {
-  console.log(product);
   const theme = useTheme();
   const cart = cartState();
   const buyModal = buyProductModal();
@@ -33,15 +32,16 @@ const ProductInfo = ({ product }: { product: Product }) => {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState(product.size.id);
 
-  console.log(size);
+  console.log("HERE");
+  console.log(cart.items);
 
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
-    if (cart.items.some((item) => item.id === product?.id)) {
+    if (cart.items.some((item) => item?.product?.id === product?.id)) {
       cart.removeProduct(product?.id);
     } else {
-      cart.addProduct(product);
+      cart.addProduct(product, size, quantity);
     }
   };
 
@@ -247,7 +247,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
             padding: 1,
           }}
         >
-          {cart.items.some((item) => item.id === product.id) ? (
+          {cart.items.some((item) => item?.product?.id === product.id) ? (
             <>
               <RemoveShoppingCartIcon color="error" />
               Remove to cart

@@ -41,16 +41,25 @@ const CartSummary = () => {
   }, [searchParams, removeAllProducts]);
 
   const productPriceTotal = products.reduce((total, item) => {
-    return total + Number(item.price);
+    // @ts-ignore
+    return total + Number(item?.product?.price * item?.quantity);
   }, 0);
+
+  console.log(products);
 
   const payOrder = async () => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
       {
-        productIds: products.map((product) => product.id),
+        products: products.map((product) => ({
+          product: product?.product?.id,
+          size: product.size,
+          quantity: product.quantity,
+        })),
       }
     );
+
+    console.log(response.data);
 
     if (response.statusText) {
       window.location = response.data.url;

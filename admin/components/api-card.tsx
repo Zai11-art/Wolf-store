@@ -136,7 +136,6 @@ export default function ApiCard({ label, link, privacy }: CardProps) {
             <Box sx={{ display: "flex" }}>
               <TextField
                 sx={{ width: "100%", mt: 1 }}
-                id="outlined-basic"
                 variant="outlined"
                 value={link}
               />

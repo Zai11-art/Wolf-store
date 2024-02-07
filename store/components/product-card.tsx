@@ -51,9 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const previewProduct: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
-    console.log(data);
     previewModal.onOpen(data);
-    console.log(previewModal.onOpen(data));
   };
 
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -64,12 +62,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
       router.push("/sign-in");
     }
 
-    if (cart.items.some((item) => item.id === data.id)) {
+    if (cart.items.some((item) => item.product.id === data.id)) {
       cart.removeProduct(data.id);
     } else {
-      cart.addProduct(data);
+      cart.addProduct(data, data.size.id, 1);
     }
   };
+
+  console.log(cart.items);
 
   return (
     <Card
@@ -155,7 +155,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           }}
           size="small"
         >
-          {cart.items.some((item) => item.id === data.id) ? (
+          {cart.items.some((item) => item.product.id === data.id) ? (
             <RemoveShoppingCartIcon color="error" />
           ) : (
             <AddShoppingCartIcon color="success" />

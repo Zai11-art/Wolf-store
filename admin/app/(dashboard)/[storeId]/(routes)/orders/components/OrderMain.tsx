@@ -8,7 +8,7 @@ import DataTable from "@/components/DataTable";
 
 export interface OrderProps {
   id: string;
-  storeId: string;
+  store: string;
   isPaid: string;
   phone: string;
   address: string;

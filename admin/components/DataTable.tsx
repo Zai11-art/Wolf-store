@@ -216,16 +216,32 @@ const DataTable = ({
           accessorKey: "id", //access nested data with dot notation
           header: "Order Id",
           size: 150,
+          enableClickToCopy: true,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <ContentCopyIcon />
+              <span>{`${
+                cell.renderValue().slice(0, 4) +
+                "..." +
+                cell.renderValue().slice(-6)
+              }`}</span>
+            </Box>
+          ),
         },
         {
-          accessorKey: "storeId", //access nested data with dot notation
-          header: "StoreId",
+          accessorKey: "store", //access nested data with dot notation
+          header: "Store Name",
           size: 150,
         },
         {
           accessorKey: "isPaid", //access nested data with dot notation
           header: "Paid Status",
           size: 150,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <code style={{color: cell.renderValue() === 'true' ? "#47ad50" : '#d12626', fontWeight: 'bold' }}>{`${cell.renderValue()}`}</code>
+            </Box>
+          ),
         },
         {
           accessorKey: "phone", //access nested data with dot notation

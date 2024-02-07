@@ -14,6 +14,7 @@ export default async function OrdersPage({
       storeId: params.storeId,
     },
     include: {
+      store: true,
       orderitems: {
         include: {
           product: true,
@@ -26,15 +27,21 @@ export default async function OrdersPage({
   });
 
   // @ts-ignore
-  const convertedOrders = orders?.map((ord) => ({
-    id: `${ord.id}`,
-    storeId: `${ord.storeId}`,
-    isPaid: `${ord.isPaid}`,
-    phone: `${ord.phone}`,
-    address: `${ord.address}`,
-    createdAt: `${format(ord.createdAt, "MMMM do, yyyy")}`,
-    products: `${ord.orderitems.map((item) => item.product.name).join(", ")}`,
-  }));
+  const convertedOrders = orders?.map((ord) => {
+    console.log("CHECK HERE DUDEEEEEE");
+    console.log(ord.orderitems);
+    return {
+      id: `${ord.id}`,
+      store: `${ord.store.name}`,
+      isPaid: `${ord.isPaid}`,
+      phone: `${ord.phone}`,
+      address: `${ord.address}`,
+      createdAt: `${format(ord.createdAt, "MMMM do, yyyy")}`,
+      products: `${ord.orderitems
+        .map((item) => `${item.quantity} ${item.product.name}`)
+        .join(", ")}`,
+    };
+  });
 
   return (
     <Container maxWidth={false}>

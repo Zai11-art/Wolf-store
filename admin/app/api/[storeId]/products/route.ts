@@ -91,7 +91,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
     if (!name) {
-      return new NextResponse("Name is ", { status: 401 });
+      return new NextResponse("Name is required", { status: 401 });
     }
     if (!images || images.length === 0) {
       return new NextResponse("Images are required", { status: 403 });

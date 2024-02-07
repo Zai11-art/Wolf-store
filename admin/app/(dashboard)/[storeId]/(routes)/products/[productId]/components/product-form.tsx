@@ -29,6 +29,7 @@ import { useParams, useRouter } from "next/navigation";
 import WarningDialog from "@/components/warning-dialog";
 import ImageUploadMultiple from "@/components/image-upload-multiple";
 import { Category, Color, Image, Product, Size } from "@prisma/client";
+import { useAuth } from "@clerk/nextjs";
 
 interface ProductFormProps {
   data:

@@ -11,6 +11,7 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Divider from "@mui/material/Divider";
+import { SignInButton } from "@clerk/nextjs";
 import ListItem from "@mui/material/ListItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import BoltIcon from "@mui/icons-material/Bolt";
@@ -25,12 +26,12 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
-import { Category, Product } from "@/types";
-import cartState from "@/hooks/cart-state";
-import { ColorModeContext } from "@/providers/theme-provider";
 import SearchBar from "./searchbar";
-import { useAuth, UserButton } from "@clerk/nextjs";
 import { toast } from "react-toastify";
+import cartState from "@/hooks/cart-state";
+import { Category, Product } from "@/types";
+import { useAuth, UserButton } from "@clerk/nextjs";
+import { ColorModeContext } from "@/providers/theme-provider";
 
 function ResponsiveAppBar({
   categories,
@@ -280,8 +281,32 @@ function ResponsiveAppBar({
                 {productCount.items.length}
                 <ShoppingBagIcon />
               </Button>
-
-              <UserButton />
+              {isAuth ? (
+                <UserButton />
+              ) : (
+                <SignInButton>
+                  <Button
+                    sx={{
+                      color: buttonTextMode,
+                      backgroundColor: buttonColorMode,
+                      fontWeight: "bold",
+                      ":hover": {
+                        backgroundColor: hoverColorMode,
+                        color: hoverTextMode,
+                        borderColor: hoverColorMode,
+                      },
+                      fontFamily: "inherit",
+                      borderRadius: "20px",
+                      borderColor: buttonColorMode,
+                      boxShadow: 5,
+                      display: "flex",
+                      padding: 1,
+                    }}
+                  >
+                    Login
+                  </Button>
+                </SignInButton>
+              )}
             </Stack>
           </Box>
         </Toolbar>

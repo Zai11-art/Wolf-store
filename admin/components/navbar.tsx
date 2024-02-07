@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
-import { UserButton } from "@clerk/nextjs";
+import { useAuth, UserButton } from "@clerk/nextjs";
 import Toolbar from "@mui/material/Toolbar";
 import { useMediaQuery } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -25,6 +25,7 @@ import { useState } from "react";
 import List from "@mui/material/List";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
+import { SignInButton } from "@clerk/nextjs";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -49,6 +50,7 @@ interface StoreProps {
 const ResponsiveAppBar: React.FC<StoreProps> = ({ stores }: StoreProps) => {
   const params = useParams();
   const pathName = usePathname();
+  const { userId } = useAuth();
 
   // ROUTES
   const pages = [
@@ -272,7 +274,7 @@ const ResponsiveAppBar: React.FC<StoreProps> = ({ stores }: StoreProps) => {
                 )}
               </IconButton>
               <Box sx={{ marginTop: "200px" }}>
-                <UserButton />
+                {userId ? <UserButton /> : <SignInButton />}
               </Box>
             </Stack>
           </Box>
