@@ -115,17 +115,26 @@ model Image {
 }
 
 model Order {
-    id         String      @id @default(uuid())
-    storeId    String
-    isPaid     Boolean     @default(false)
-    phone      String      @default("")
-    address    String      @default("")
-    createdAt  DateTime    @default(now())
-    updatedAt  DateTime    @updatedAt
-    store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
-    orderitems OrderItem[]
+    id          String      @id @default(uuid())
+    storeId     String
+    isPaid      Boolean     @default(false)
+    orderStatus OrderStatus @default(processing)
+    phone       String      @default("")
+    address     String      @default("")
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    store       Store       @relation("StoreToOrder", fields: [storeId], references: [id])
+    orderitems  OrderItem[]
 
     @@index([storeId])
+}
+
+enum OrderStatus {
+    processing
+    failed
+    shippped
+    delivered
+    cancelled
 }
 
 model OrderItem {

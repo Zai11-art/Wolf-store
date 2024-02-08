@@ -40,6 +40,7 @@ export default async function OrdersPage({
       products: `${ord.orderitems
         .map((item) => `${item.quantity} ${item.product.name}`)
         .join(", ")}`,
+      orderStatus: `${ord.orderStatus}`,
     };
   });
 

@@ -14,6 +14,7 @@ export interface OrderProps {
   address: string;
   createdAt: string;
   products: string;
+  orderStatus: string;
 }
 
 interface OrderMainProps {

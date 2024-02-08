@@ -18,8 +18,6 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { Product } from "@/types";
 import cartState from "@/hooks/cart-state";
 import productPreviewModal from "@/hooks/product-preview-modal";
-import { useAuth } from "@clerk/nextjs";
-import { toast } from "react-toastify";
 
 interface ProductCardProps {
   data: Product;
@@ -30,13 +28,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }: {
   data: Product;
 }) => {
-  // CHECK IF USER LOGGED IN EXISTS
-  const { userId: isAuth } = useAuth();
-
   const theme = useTheme();
+  const cart = cartState();
   const router = useRouter();
   const previewModal = productPreviewModal();
-  const cart = cartState();
   const md = useMediaQuery("(min-width:768px)");
 
   const buttonColorMode = theme.palette.mode === "dark" ? "white" : "black";
@@ -45,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
   const handleViewProduct = () => {
-    isAuth ? router.push(`/product/${data?.id}`) : router.push(`/sign-in`);
+    router.push(`/product/${data?.id}`);
   };
 
   const previewProduct: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -57,12 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const addToCard: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 
-    if (!isAuth) {
-      toast.error("Sign in to add item to cart.");
-      router.push("/sign-in");
-    }
-
-    if (cart.items.some((item) => item.product.id === data.id)) {
+    if (cart.items.some((item) => item?.product?.id === data.id)) {
       cart.removeProduct(data.id);
     } else {
       cart.addProduct(data, data.size.id, 1);
@@ -155,7 +145,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           }}
           size="small"
         >
-          {cart.items.some((item) => item.product.id === data.id) ? (
+          {cart.items.some((item) => item?.product?.id === data.id) ? (
             <RemoveShoppingCartIcon color="error" />
           ) : (
             <AddShoppingCartIcon color="success" />

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box } from "@mui/material";
+import { Box, Button,useTheme } from "@mui/material";
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
@@ -12,15 +12,27 @@ import { ColorProps } from "@/app/(dashboard)/[storeId]/(routes)/colors/componen
 import { OrderProps } from "@/app/(dashboard)/[storeId]/(routes)/orders/components/OrderMain";
 import { PlacardProps } from "@/app/(dashboard)/[storeId]/(routes)/placards/components/PlacardMain";
 import { ProductProps } from "@/app/(dashboard)/[storeId]/(routes)/products/components/ProductMain";
+import OrderStatusToggle from "./order-status-toggle";
 
 const DataTable = ({
   data,
   dataType,
 }: {
-  data: CategoryProps[] | ColorProps[] | OrderProps[] | PlacardProps[] | ProductProps[] |undefined;
+  data:
+    | CategoryProps[]
+    | ColorProps[]
+    | OrderProps[]
+    | PlacardProps[]
+    | ProductProps[]
+    | undefined;
   dataType: string;
 }) => {
   const [isMounted, setMounted] = React.useState(false);
+  const theme = useTheme();
+
+  
+  // const buttonColorMode = theme.palette.mode === "dark" ? "black" : "white";
+  // const hoverColorMode = theme.palette.mode === "dark" ? "#262626" : " white";
 
   React.useEffect(() => {
     if (!isMounted) {
@@ -39,7 +51,7 @@ const DataTable = ({
           enableClickToCopy: true,
           Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <ContentCopyIcon />
+              <ContentCopyIcon fontSize="small" />
               <span>{`${
                 cell.renderValue().slice(0, 4) +
                 "..." +
@@ -78,7 +90,7 @@ const DataTable = ({
           enableClickToCopy: true,
           Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <ContentCopyIcon />
+              <ContentCopyIcon fontSize="small" />
               <span>{`${
                 cell.renderValue().slice(0, 4) +
                 "..." +
@@ -117,7 +129,7 @@ const DataTable = ({
           enableClickToCopy: true,
           Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <ContentCopyIcon />
+              <ContentCopyIcon fontSize="small" />
               <span>{`${
                 cell.renderValue().slice(0, 4) +
                 "..." +
@@ -175,7 +187,7 @@ const DataTable = ({
           enableClickToCopy: true,
           Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <ContentCopyIcon />
+              <ContentCopyIcon fontSize="small" />
               <span>{`${
                 cell.renderValue().slice(0, 4) +
                 "..." +
@@ -212,19 +224,76 @@ const DataTable = ({
 
     if (dataType === "orders") {
       return [
+       
         {
           accessorKey: "id", //access nested data with dot notation
           header: "Order Id",
           size: 150,
           enableClickToCopy: true,
           Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <ContentCopyIcon />
+            <Box sx={{ display: "flex", gap: 1}}>
+              <ContentCopyIcon fontSize="small" />
               <span>{`${
                 cell.renderValue().slice(0, 4) +
                 "..." +
-                cell.renderValue().slice(-6)
+                cell.renderValue().slice(-4)
               }`}</span>
+            </Box>
+          ),
+        },
+        {
+          accessorKey: "orderStatus", //access nested data with dot notation
+          header: "Order Status",
+          size: 150,
+          Cell: ({ cell }) => (
+            <>
+              {/* ADD FEATURES HERE */}
+              {/* @ts-ignore */}
+              <OrderStatusToggle id={cell.row.original.id} status={cell.renderValue() ? cell.renderValue() : ''} />
+            </>
+          ),
+        },
+        // {
+        //   accessorKey: "orderStatus", //access nested data with dot notation
+        //   header: "Order Status",
+        //   size: 150,
+        //   Cell: ({ cell }) => (
+        //     <>
+        //       {/* ADD FEATURES HERE */}
+        //       <Button sx={{ backgroundColor: 'black' ,textAlign: 'center',  borderRadius: 10, paddingX: 2}}>
+        //         <code
+        //           style={{
+        //             color:
+        //               cell.renderValue() === "processing"
+        //                 ? "#b8af04"
+        //                 : cell.renderValue() === "failed"
+        //                 ? "red"
+        //                 : cell.renderValue() === "shippped"
+        //                 ? "orange"
+        //                 : cell.renderValue() === "delivered"
+        //                 ? "green"
+        //                 : cell.renderValue() === "cancelled"
+        //                 ? "red"
+        //                 : "white",
+        //             fontWeight: "bold",
+        //           }}
+        //         >{`${cell.renderValue()}`}</code>
+        //       </Button>
+        //     </>
+        //   ),
+        // },
+        {
+          accessorKey: "isPaid", //access nested data with dot notation
+          header: "Paid Status",
+          size: 150,
+          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <code
+                style={{
+                  color: cell.renderValue() === "true" ? "#47ad50" : "#d12626",
+                  fontWeight: "bold",
+                }}
+              >{`${cell.renderValue()}`}</code>
             </Box>
           ),
         },
@@ -232,16 +301,6 @@ const DataTable = ({
           accessorKey: "store", //access nested data with dot notation
           header: "Store Name",
           size: 150,
-        },
-        {
-          accessorKey: "isPaid", //access nested data with dot notation
-          header: "Paid Status",
-          size: 150,
-          Cell: ({ cell }: { cell: { renderValue: () => any } }) => (
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <code style={{color: cell.renderValue() === 'true' ? "#47ad50" : '#d12626', fontWeight: 'bold' }}>{`${cell.renderValue()}`}</code>
-            </Box>
-          ),
         },
         {
           accessorKey: "phone", //access nested data with dot notation
@@ -268,7 +327,7 @@ const DataTable = ({
           header: "Options",
           size: 150,
           Cell: ({ cell }) => (
-            <SplitButton dataType="orders" id={cell.row.original.id} />
+              <SplitButton dataType="orders" id={cell.row.original.id} />
           ),
         },
       ];
@@ -353,7 +412,7 @@ const DataTable = ({
     <>
       <WarningDialog loading={false} />
       <MaterialReactTable
-        muiTableContainerProps={{ sx: { height: "300px" } }}
+        muiTableContainerProps={{ sx: { height: "500px" } }}
         enableGrouping
         columns={columns}
         // @ts-ignore
