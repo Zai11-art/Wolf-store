@@ -22,9 +22,9 @@ import { useParams, useRouter } from "next/navigation";
 
 const options = [
   { label: "processing", color: "#b2a300", icon: <RotateRightIcon /> },
-  { label: "failed", color: "red", icon: <ErrorIcon /> },
   { label: "shipped", color: "orange", icon: <LocalShippingIcon /> },
   { label: "delivered", color: "#00a152", icon: <CheckCircleOutlineIcon /> },
+  { label: "failed", color: "red", icon: <ErrorIcon /> },
   { label: "cancelled", color: "#ff6333", icon: <CancelIcon /> },
 ];
 
@@ -54,25 +54,21 @@ export default function OrderStatusToggle({
       : status === "delivered"
       ? "green"
       : status === "cancelled"
-      ? "green"
+      ? "#ff6333"
       : "white";
 
   const handleSetStatus = async (status: string) => {
     try {
       const parsedData = { status: status, orderId: id };
+      console.log(parsedData);
 
+      setLoading(true);
       if (id && status) {
-        await axios.get(
-          `/api/${params.storeId}/orders`
-          // parsedData
-        );
+        await axios.post(`/api/${params.storeId}/orders`, parsedData);
       }
+      toast.success("Successfully changing order status");
+      router.refresh();
 
-      //   if (res) {
-      //     setLoading(true);
-      //     toast.success("Successfully changing order status");
-      //     router.refresh();
-      //   }
     } catch (error) {
       console.error(error);
       toast.error("Failed changing status");
@@ -161,7 +157,7 @@ export default function OrderStatusToggle({
                   ) : (
                     <Box
                       sx={{
-                        width: "400px",
+                        width: "420px",
                         flexWrap: "wrap",
                         display: "flex",
                         gap: 1,

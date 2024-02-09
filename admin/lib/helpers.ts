@@ -27,14 +27,13 @@ export const getTotalSales = async (storeId: string) => {
 };
 
 export const getStockCount = async (storeId: string) => {
-  const stockCount = await prismadb.product.count({
+  const stockCount = await prismadb.product.findMany({
     where: {
       storeId: storeId,
-      isArchived: false,
     },
   });
 
-  return stockCount;
+  return stockCount.reduce((acc, rec) => +rec.stocks + +acc, 0);
 };
 
 export const getMonthlyGraphData = async (storeId: string) => {

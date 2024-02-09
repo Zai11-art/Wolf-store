@@ -131,6 +131,8 @@ function ResponsiveAppBar({
   const hoverColorMode = theme.palette.mode === "dark" ? "#262626" : " white";
   const hoverTextMode = theme.palette.mode === "dark" ? "white" : " black";
 
+
+
   if (!isMounted) {
     return null;
   }

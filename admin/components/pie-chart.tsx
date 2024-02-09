@@ -31,8 +31,18 @@ export default function PieActiveArc({
       series={[
         {
           data: [
-            { id: 0, value: pieData?.paidOrders, label: "Paid Orders" },
-            { id: 1, value: pieData?.unPaidOrders, label: "Unpaid Orders" },
+            {
+              id: 0,
+              value: pieData?.paidOrders,
+              label: "Paid Orders",
+              color: "#3a98cf",
+            },
+            {
+              id: 1,
+              value: pieData?.unPaidOrders,
+              label: "Unpaid Orders",
+              color: "#154059",
+            },
           ],
           highlightScope: { faded: "global", highlighted: "item" },
           faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },

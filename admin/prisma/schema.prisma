@@ -132,7 +132,7 @@ model Order {
 enum OrderStatus {
     processing
     failed
-    shippped
+    shipped
     delivered
     cancelled
 }

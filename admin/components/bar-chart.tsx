@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { GraphData } from "@/app/(dashboard)/[storeId]/(routes)/page";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 interface BarChartProps {
   height: number;
@@ -16,7 +16,6 @@ export default function SimpleCharts({
 }: BarChartProps) {
   const xData = barData.map((x) => x.name);
   const yData = barData.map((y) => y.total);
-
   const isData = yData.some((data: number) => data > 1);
 
   if (!isData) {
@@ -24,21 +23,25 @@ export default function SimpleCharts({
   }
 
   return (
-    <BarChart
-      xAxis={[
-        {
-          id: "barCategories",
-          data: xData,
-          scaleType: "band",
-        },
-      ]}
-      series={[
-        {
-          data: yData,
-        },
-      ]}
-      width={width}
-      height={height}
-    />
+    <>
+      <BarChart
+        sx={{ display: "flex" }}
+        xAxis={[
+          {
+            id: "barCategories",
+            data: xData,
+            scaleType: "band",
+          },
+        ]}
+        series={[
+          {
+            data: yData,
+            color: "#3a98cf",
+          },
+        ]}
+        width={width}
+        height={height}
+      />
+    </>
   );
 }
